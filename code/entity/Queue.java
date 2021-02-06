@@ -1,4 +1,4 @@
-/* Queue.java
+package entity;/* entity.Queue.java
  *
  *  Version
  *  $Id$
@@ -13,7 +13,7 @@ import java.util.Vector;
 public class Queue {
 	private Vector v;
 	
-	/** Queue()
+	/** entity.Queue()
 	 * 
 	 * creates a new queue
 	 */

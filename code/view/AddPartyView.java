@@ -1,10 +1,10 @@
-/* AddPartyView.java
+package view;/* view.AddPartyView.java
  *
  *  Version:
  * 		 $Id$
  * 
  *  Revisions:
- * 		$Log: AddPartyView.java,v $
+ * 		$Log: view.AddPartyView.java,v $
  * 		Revision 1.7  2003/02/20 02:05:53  ???
  * 		Fixed addPatron so that duplicates won't be created.
  * 		
@@ -15,7 +15,7 @@
  * 		Made updates to migrate to observer model.
  * 		
  * 		Revision 1.4  2003/02/02 16:29:52  ???
- * 		Added ControlDeskEvent and ControlDeskObserver. Updated Queue to allow access to Vector so that contents could be viewed without destroying. Implemented observer model for most of ControlDesk.
+ * 		Added events.ControlDeskEvent and observer.ControlDeskObserver. Updated entity.Queue to allow access to Vector so that contents could be viewed without destroying. Implemented observer model for most of ControlDesk.
  * 		
  * 
  */
@@ -25,6 +25,9 @@
  *
  */
 
+import entity.Bowler;
+import persistence.BowlerFile;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -32,7 +35,6 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 
 import java.util.*;
-import java.text.*;
 
 /**
  * Constructor for GUI used to Add Parties to the waiting party queue.
@@ -209,9 +211,9 @@ public class AddPartyView implements ActionListener, ListSelectionListener {
 	}
 
 /**
- * Called by NewPatronView to notify AddPartyView to update
+ * Called by view.NewPatronView to notify view.AddPartyView to update
  * 
- * @param newPatron the NewPatronView that called this method
+ * @param newPatron the view.NewPatronView that called this method
  */
 
 	public void updateNewPatron(NewPatronView newPatron) {
