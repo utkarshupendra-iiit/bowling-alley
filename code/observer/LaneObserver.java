@@ -1,7 +1,7 @@
-/* $Id$
+package observer;/* $Id$
  *
  * Revisions:
- *   $Log: LaneObserver.java,v $
+ *   $Log: observer.LaneObserver.java,v $
  *   Revision 1.2  2003/01/30 21:44:25  ???
  *   Fixed speling of received in may places.
  *
@@ -10,6 +10,8 @@
  *
  *
  */
+
+import events.LaneEvent;
 
 public interface LaneObserver {
 	public void receiveLaneEvent(LaneEvent le);

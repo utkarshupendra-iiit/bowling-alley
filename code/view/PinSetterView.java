@@ -1,5 +1,5 @@
-/*
- * PinSetterView/.java
+package view;/*
+ * view.PinSetterView/.java
  *
  * Version:
  *   $Id$
@@ -13,8 +13,10 @@
  *
  */
 
+import events.PinsetterEvent;
+import observer.PinsetterObserver;
+
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import java.util.Vector;
 

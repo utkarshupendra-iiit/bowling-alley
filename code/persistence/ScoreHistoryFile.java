@@ -1,4 +1,4 @@
-/**
+package persistence; /**
  *
  * To change this generated comment edit the template variable "typecomment":
  * Window>Preferences>Java>Templates.
@@ -6,12 +6,14 @@
  * Window>Preferences>Java>Code Generation.
  */
 
+import entity.Score;
+
 import java.util.*;
 import java.io.*;
 
 public class ScoreHistoryFile {
 
-	private static String SCOREHISTORY_DAT = "SCOREHISTORY.DAT";
+	private static String SCOREHISTORY_DAT = "code/persistence/SCOREHISTORY.DAT";
 
 	public static void addScore(String nick, String date, String score)
 		throws IOException, FileNotFoundException {
@@ -34,7 +36,7 @@ public class ScoreHistoryFile {
 		while ((data = in.readLine()) != null) {
 			// File format is nick\tfname\te-mail
 			String[] scoredata = data.split("\t");
-			//"Nick: scoredata[0] Date: scoredata[1] Score: scoredata[2]
+			//"Nick: scoredata[0] Date: scoredata[1] entity.Score: scoredata[2]
 			if (nick.equals(scoredata[0])) {
 				scores.add(new Score(scoredata[0], scoredata[1], scoredata[2]));
 			}

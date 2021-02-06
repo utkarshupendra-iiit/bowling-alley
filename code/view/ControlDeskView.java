@@ -1,4 +1,4 @@
-/* ControlDeskView.java
+package view;/* view.ControlDeskView.java
  *
  *  Version:
  *			$Id$
@@ -13,11 +13,16 @@
  *
  */
 
+import entity.ControlDesk;
+import entity.Lane;
+import entity.Pinsetter;
+import events.ControlDeskEvent;
+import observer.ControlDeskObserver;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.event.*;
 
 import java.util.*;
 
@@ -159,7 +164,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 	/**
 	 * Receive a new party from andPartyView.
 	 *
-	 * @param addPartyView	the AddPartyView that is providing a new party
+	 * @param addPartyView	the view.AddPartyView that is providing a new party
 	 *
 	 */
 
@@ -170,7 +175,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 	/**
 	 * Receive a broadcast from a ControlDesk
 	 *
-	 * @param ce	the ControlDeskEvent that triggered the handler
+	 * @param ce	the events.ControlDeskEvent that triggered the handler
 	 *
 	 */
 

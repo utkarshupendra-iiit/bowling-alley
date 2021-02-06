@@ -1,7 +1,13 @@
-/*
+package view;/*
  *  constructs a prototype Lane View
  *
  */
+
+import entity.Bowler;
+import entity.Lane;
+import entity.Party;
+import events.LaneEvent;
+import observer.LaneObserver;
 
 import java.awt.*;
 import java.awt.event.*;

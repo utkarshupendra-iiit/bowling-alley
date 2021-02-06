@@ -1,4 +1,4 @@
-/* ControlDeskObserver.java
+package observer;/* observer.ControlDeskObserver.java
  *
  *  Version
  *  $Id$
@@ -7,6 +7,8 @@
  * 		$Log$
  * 
  */
+
+import events.ControlDeskEvent;
 
 /**
  * Interface for classes that observe control desk events
