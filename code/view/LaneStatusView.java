@@ -9,8 +9,10 @@ package view; /**
 import entity.Bowler;
 import entity.Lane;
 import entity.Pinsetter;
+import events.GameEvent;
 import events.LaneEvent;
 import events.PinsetterEvent;
+import observer.GameObserver;
 import observer.LaneObserver;
 import observer.PinsetterObserver;
 
@@ -18,7 +20,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class LaneStatusView implements ActionListener, LaneObserver, PinsetterObserver {
+public class LaneStatusView implements ActionListener, LaneObserver, GameObserver, PinsetterObserver {
 
 	private JPanel jp;
 
@@ -43,11 +45,11 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 		psShowing=false;
 
 		psv = new PinSetterView( laneNum );
-		Pinsetter ps = lane.getPinsetter();
+		Pinsetter ps = lane.getGame().getSetter();
 		ps.subscribe(psv);
 
 		lv = new LaneView( lane, laneNum );
-		lane.subscribe(lv);
+		lane.getGame().subscribe(lv);
 
 
 		jp = new JPanel();
@@ -108,7 +110,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 	}
 
 	public void actionPerformed( ActionEvent e ) {
-		if ( lane.isPartyAssigned() ) { 
+		if ( lane.getGame().getParty() != null ) {
 			if (e.getSource().equals(viewPinSetter)) {
 				if ( psShowing == false ) {
 					psv.show();
@@ -120,7 +122,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 			}
 		}
 		if (e.getSource().equals(viewLane)) {
-			if ( lane.isPartyAssigned() ) { 
+			if ( lane.getGame().getParty() != null ) {
 				if ( laneShowing == false ) {
 					lv.show();
 					laneShowing=true;
@@ -131,19 +133,22 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 			}
 		}
 		if (e.getSource().equals(maintenance)) {
-			if ( lane.isPartyAssigned() ) {
-				lane.unPauseGame();
+			if ( lane.getGame().getParty() != null ) {
+				lane.getGame().unPauseGame();
 				maintenance.setBackground( Color.GREEN );
 			}
 		}
 	}
 
 	public void receiveLaneEvent(LaneEvent le) {
-		curBowler.setText( ( (Bowler)le.getBowler()).getNickName() );
 		if ( le.isMechanicalProblem() ) {
 			maintenance.setBackground( Color.RED );
-		}	
-		if ( lane.isPartyAssigned() == false ) {
+		}
+	}
+
+	public void receiveGameEvent(GameEvent ge) {
+		curBowler.setText( ( (Bowler)ge.getBowler()).getNickName() );
+		if ( lane.getGame().getParty() == null ) {
 			viewLane.setEnabled( false );
 			viewPinSetter.setEnabled( false );
 		} else {
@@ -154,8 +159,6 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 
 	public void receivePinsetterEvent(PinsetterEvent pe) {
 		pinsDown.setText( ( new Integer(pe.totalPinsDown()) ).toString() );
-//		foul.setText( ( new Boolean(pe.isFoulCommited()) ).toString() );
-		
 	}
 
 }
