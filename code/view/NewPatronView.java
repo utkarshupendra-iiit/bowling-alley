@@ -84,22 +84,10 @@ public class NewPatronView implements ActionListener {
 
 		Insets buttonMargin = new Insets(4, 4, 4, 4);
 
-		finished = new JButton("Add Patron");
-		JPanel finishedPanel = new JPanel();
-		finishedPanel.setLayout(new FlowLayout());
-		finished.addActionListener(this);
-		finishedPanel.add(finished);
+		Cbutton cbutton = new Cbutton(this);
+		finished = cbutton.createButton("Add Patron", buttonPanel);
+		abort = cbutton.createButton("Abort", buttonPanel);
 
-		abort = new JButton("Abort");
-		JPanel abortPanel = new JPanel();
-		abortPanel.setLayout(new FlowLayout());
-		abort.addActionListener(this);
-		abortPanel.add(abort);
-
-		buttonPanel.add(abortPanel);
-		buttonPanel.add(finishedPanel);
-
-		// Clean up main panel
 		colPanel.add(patronPanel, "Center");
 		colPanel.add(buttonPanel, "East");
 
@@ -132,10 +120,10 @@ public class NewPatronView implements ActionListener {
 		}
 
 	}
-
-	public boolean done() {
-		return done;
-	}
+//unused method
+//	public boolean done() {
+//		return done;
+//	}
 
 	public String getNick() {
 		return nick;
