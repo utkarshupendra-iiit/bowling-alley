@@ -61,10 +61,6 @@ public class GameEvent {
 	}
 
 
-	public int[] getCurScores(){ 
-		return curScores;
-	}
-	
 	public int getIndex() {
 		return index;
 	}
