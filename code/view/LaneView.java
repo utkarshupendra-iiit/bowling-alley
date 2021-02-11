@@ -6,15 +6,20 @@ package view;/*
 import entity.Bowler;
 import entity.Lane;
 import entity.Party;
-import events.LaneEvent;
-import observer.LaneObserver;
+import events.GameEvent;
+import observer.GameObserver;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
-import java.util.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Vector;
 
-public class LaneView implements LaneObserver, ActionListener {
+public class LaneView implements GameObserver, ActionListener {
 
 	private int roll;
 	private boolean initDone = true;
@@ -128,8 +133,8 @@ public class LaneView implements LaneObserver, ActionListener {
 		return panel;
 	}
 
-	public void receiveLaneEvent(LaneEvent le) {
-		if (lane.isPartyAssigned() && !lane.isGameFinished()) {
+	public void receiveGameEvent(GameEvent le) {
+		if (lane.getGame().getParty() != null) {
 			int numBowlers = le.getParty().getMembers().size();
 			while (!initDone) {
 				//System.out.println("chillin' here.");
@@ -193,7 +198,7 @@ public class LaneView implements LaneObserver, ActionListener {
 								&& i % 2 == 1)
 							ballLabel[k][i].setText("/");
 						else if ( ((int[])((HashMap) le.getScore()).get(bowlers.get(k)))[i] == -2 ){
-							
+
 							ballLabel[k][i].setText("F");
 						} else
 							ballLabel[k][i].setText(
@@ -208,8 +213,7 @@ public class LaneView implements LaneObserver, ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(maintenance)) {
-			lane.pauseGame();
+			lane.maintenanceCall();
 		}
 	}
-
 }

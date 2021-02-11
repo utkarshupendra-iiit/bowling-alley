@@ -9,8 +9,10 @@ package view; /**
 import entity.Bowler;
 import entity.Lane;
 import entity.Pinsetter;
+import events.GameEvent;
 import events.LaneEvent;
 import events.PinsetterEvent;
+import observer.GameObserver;
 import observer.LaneObserver;
 import observer.PinsetterObserver;
 
@@ -21,7 +23,7 @@ import java.util.Vector;
 import java.util.Iterator;
 import entity.ScoreReport;
 
-public class LaneStatusView implements ActionListener, LaneObserver, PinsetterObserver {
+public class LaneStatusView implements ActionListener, LaneObserver, GameObserver, PinsetterObserver {
 
 	private JPanel jp;
 
@@ -46,11 +48,11 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 		psShowing=false;
 
 		psv = new PinSetterView( laneNum );
-		Pinsetter ps = lane.getPinsetter();
+		Pinsetter ps = lane.getGame().getSetter();
 		ps.subscribe(psv);
 
 		lv = new LaneView( lane, laneNum );
-		lane.subscribe(lv);
+		lane.getGame().subscribe(lv);
 
 
 		jp = new JPanel();
@@ -96,7 +98,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 	}
 
 	public void actionPerformed( ActionEvent e ) {
-		if ( lane.isPartyAssigned() ) {
+		if ( lane.getGame().getParty() != null ) {
 			if (e.getSource().equals(viewPinSetter)) {
 				if ( psShowing == false ) {
 					psv.show();
@@ -108,7 +110,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 			}
 		}
 		if (e.getSource().equals(viewLane)) {
-			if ( lane.isPartyAssigned() ) {
+			if ( lane.getGame().getParty() != null ) {
 				if ( laneShowing == false ) {
 					lv.show();
 					laneShowing=true;
@@ -119,61 +121,21 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 			}
 		}
 		if (e.getSource().equals(maintenance)) {
-			if ( lane.isPartyAssigned() ) {
-				lane.unPauseGame();
+			if ( lane.getGame().getParty() != null ) {
+				lane.getGame().unPauseGame();
 				maintenance.setBackground( Color.GREEN );
 			}
 		}
 	}
 
-	public void receiveLaneEvent(LaneEvent le) {
-		if (lane.isPartyAssigned() && lane.isGameFinished()) {
-
-			EndGamePrompt egp = new EndGamePrompt( ((Bowler) le.getParty().getMembers().get(0)).getNickName() + "'s Party" );
-			int result = egp.getResult();
-			egp.distroy();
-			egp = null;
-			System.out.println("result was: " + result);
-
-			// TODO: send record of scores to control desk
-
-			if (result == 1) {					// yes, want to play again
-				lane.resetScores();
-				lane.resetBowlerIterator();
-
-			} else if (result == 2) {// no, dont want to play another game
-				Vector printVector;
-				EndGameReport egr = new EndGameReport( ((Bowler) le.getParty().getMembers().get(0)).getNickName() + "'s Party", le.getParty());
-				printVector = egr.getResult();
-				//partyAssigned = false;
-				Iterator scoreIt = le.getParty().getMembers().iterator();
-
-				lane.clearLane();
-				//publish(lanePublish());
-
-				int myIndex = 0;
-				while (scoreIt.hasNext()){
-					Bowler thisBowler = (Bowler)scoreIt.next();
-					ScoreReport sr = new ScoreReport( thisBowler, lane.getFinalScores()[myIndex++], lane.getGameNumber());
-					sr.sendEmail(thisBowler.getEmail());
-					Iterator printIt = printVector.iterator();
-					while (printIt.hasNext()){
-						if (thisBowler.getNickName() == (String)printIt.next()){
-							System.out.println("Printing " + thisBowler.getNickName());
-							sr.sendPrintout();
-						}
-					}
-
-				}
+		public void receiveLaneEvent(LaneEvent le) {
+			if ( le.isMechanicalProblem() ) {
+				maintenance.setBackground( Color.RED );
 			}
-
 		}
-		curBowler.setText( ( (Bowler)le.getBowler()).getNickName() );
-
-		if ( le.isMechanicalProblem() ) {
-			maintenance.setBackground( Color.RED );
-		}
-		if ( lane.isPartyAssigned() == false ) {
+	public void receiveGameEvent(GameEvent ge) {
+		curBowler.setText( ( (Bowler)ge.getBowler()).getNickName() );
+		if ( lane.getGame().getParty() == null ) {
 			viewLane.setEnabled( false );
 			viewPinSetter.setEnabled( false );
 		} else {
@@ -184,8 +146,6 @@ public class LaneStatusView implements ActionListener, LaneObserver, PinsetterOb
 
 	public void receivePinsetterEvent(PinsetterEvent pe) {
 		pinsDown.setText( ( new Integer(pe.totalPinsDown()) ).toString() );
-//		foul.setText( ( new Boolean(pe.isFoulCommited()) ).toString() );
-
 	}
 
 }

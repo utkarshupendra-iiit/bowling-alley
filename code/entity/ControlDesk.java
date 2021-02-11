@@ -61,13 +61,6 @@ public class ControlDesk extends Thread {
 	/** The collection of subscribers */
 	private Vector subscribers;
 
-    /**
-     * Constructor for the entity.ControlDesk class
-     *
-     * @param numlanes	the numbler of lanes to be represented
-     *
-     */
-
 	public ControlDesk(int numLanes) {
 		this.numLanes = numLanes;
 		lanes = new HashSet(numLanes);
@@ -136,9 +129,9 @@ public class ControlDesk extends Thread {
 		while (it.hasNext() && partyQueue.hasMoreElements()) {
 			Lane curLane = (Lane) it.next();
 
-			if (curLane.isPartyAssigned() == false) {
+			if (curLane.getGame().getParty() == null) {
 				System.out.println("ok... assigning this party");
-				curLane.assignParty(((Party) partyQueue.next()));
+				curLane.getGame().assignParty(((Party) partyQueue.next()));
 			}
 		}
 		publish(new ControlDeskEvent(getPartyQueue()));
