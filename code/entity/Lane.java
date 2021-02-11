@@ -131,7 +131,6 @@ package entity;
  * 
  */
 
-import events.LaneEvent;
 import observer.LaneObserver;
 import view.EndGamePrompt;
 import view.EndGameReport;
@@ -155,15 +154,15 @@ public class Lane extends Thread {
 
 	public void maintenanceCall() {
 		game.setHalted(true);
-		publish(new LaneEvent(true));
+		publish(true);
 	}
 
-	public void publish( LaneEvent event ) {
+	public void publish( boolean mechProb ) {
 		if( subscribers.size() > 0 ) {
 			Iterator eventIterator = subscribers.iterator();
 
 			while ( eventIterator.hasNext() ) {
-				( (LaneObserver) eventIterator.next()).receiveLaneEvent( event );
+				( (LaneObserver) eventIterator.next()).receiveLaneEvent( mechProb );
 			}
 		}
 	}

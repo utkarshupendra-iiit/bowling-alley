@@ -8,7 +8,8 @@ package observer;/* observer.ControlDeskObserver.java
  * 
  */
 
-import events.ControlDeskEvent;
+import entity.Queue;
+import java.util.Vector;
 
 /**
  * Interface for classes that observe control desk events
@@ -17,6 +18,6 @@ import events.ControlDeskEvent;
 
 public interface ControlDeskObserver {
 
-	public void receiveControlDeskEvent(ControlDeskEvent ce);
+	public void receiveControlDeskEvent(Vector partyQueue);
 
 }

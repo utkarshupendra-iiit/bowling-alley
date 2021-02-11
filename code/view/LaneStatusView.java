@@ -8,16 +8,15 @@ package view; /**
 
 import entity.Bowler;
 import entity.Lane;
+import entity.Party;
 import entity.Pinsetter;
-import events.GameEvent;
-import events.LaneEvent;
-import events.PinsetterEvent;
 import observer.GameObserver;
 import observer.LaneObserver;
 import observer.PinsetterObserver;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
 import javax.swing.*;
 
 public class LaneStatusView implements ActionListener, LaneObserver, GameObserver, PinsetterObserver {
@@ -140,14 +139,14 @@ public class LaneStatusView implements ActionListener, LaneObserver, GameObserve
 		}
 	}
 
-	public void receiveLaneEvent(LaneEvent le) {
-		if ( le.isMechanicalProblem() ) {
+	public void receiveLaneEvent(boolean mechProb) {
+		if ( mechProb ) {
 			maintenance.setBackground( Color.RED );
 		}
 	}
 
-	public void receiveGameEvent(GameEvent ge) {
-		curBowler.setText( ( (Bowler)ge.getBowler()).getNickName() );
+	public void receiveGameEvent(Party p, int bI, Bowler cT, int[][] cS, HashMap scores, int frameNum, int[] curScores, int ball) {
+		curBowler.setText( ( (Bowler)cT).getNickName() );
 		if ( lane.getGame().getParty() == null ) {
 			viewLane.setEnabled( false );
 			viewPinSetter.setEnabled( false );
@@ -157,8 +156,8 @@ public class LaneStatusView implements ActionListener, LaneObserver, GameObserve
 		}
 	}
 
-	public void receivePinsetterEvent(PinsetterEvent pe) {
-		pinsDown.setText( ( new Integer(pe.totalPinsDown()) ).toString() );
+	public void receivePinsetterEvent(boolean pins[], boolean foul, int throwNumber, int jdpins, int totalPinsDown) {
+		pinsDown.setText( ( new Integer(totalPinsDown) ).toString() );
 	}
 
 }

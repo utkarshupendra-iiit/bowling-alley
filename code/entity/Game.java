@@ -1,7 +1,5 @@
 package entity;
 
-import events.GameEvent;
-import events.PinsetterEvent;
 import observer.GameObserver;
 import observer.LaneObserver;
 import observer.PinsetterObserver;
@@ -199,77 +197,70 @@ public class Game implements PinsetterObserver {
         curScore[ index - 1] = score;
         scores.put(Cur, curScore);
         getScore( Cur, frame );
-        publish( gamePublish() );
+        publish();
     }
 
-    public void publish( GameEvent event ) {
+    public void publish( Party p, int bI, Bowler cT, int[][] cS, HashMap scores, int frameNum, int[] curScores, int ball) {
         if( subscribers.size() > 0 ) {
             Iterator eventIterator = subscribers.iterator();
 
             while ( eventIterator.hasNext() ) {
-                ( (GameObserver) eventIterator.next()).receiveGameEvent( event );
+                ( (GameObserver) eventIterator.next()).receiveGameEvent( p, bI, cT, cS, scores, frameNum, curScores, ball );
             }
         }
     }
 
     public void publish() {
-        publish(getGameEvent());
-    }
-
-    public GameEvent gamePublish(  ) {
-        return getGameEvent();
+        publish(party, bowlIndex, currentThrower, cumulScores, scores, frameNumber+1, curScores, ball);
     }
 
     public void pauseGame() {
         setHalted(true);
-        publish(gamePublish());
+        publish();
     }
 
     public void unPauseGame() {
         setHalted(false);
-        publish(gamePublish());
+        publish();
     }
 
-    public void receivePinsetterEvent(PinsetterEvent pe) {
+    public void receivePinsetterEvent(boolean pins[], boolean foul, int throwNumber, int jdpins, int totalPinsDown) {
 
-        if (pe.pinsDownOnThisThrow() >=  0) {			// this is a real throw
-            markScore(currentThrower, frameNumber + 1, pe.getThrowNumber(), pe.pinsDownOnThisThrow());
+        if (jdpins >=  0) {			// this is a real throw
+            markScore(currentThrower, frameNumber + 1, throwNumber, jdpins);
 
             if (frameNumber == 9) {
-                if (pe.totalPinsDown() == 10) {
+                if (totalPinsDown == 10) {
                     setter.resetPins();
-                    if(pe.getThrowNumber() == 1) {
+                    if(throwNumber == 1) {
                         tenthFrameStrike = true;
                     }
                 }
 
-                if ((pe.totalPinsDown() != 10) && (pe.getThrowNumber() == 2 && tenthFrameStrike == false)) {
+                if ((totalPinsDown != 10) && (throwNumber == 2 && tenthFrameStrike == false)) {
                     canThrowAgain = false;
-                    publish( gamePublish() );
+                    publish();
                 }
 
-                if (pe.getThrowNumber() == 3) {
+                if (throwNumber == 3) {
                     canThrowAgain = false;
-                    publish( gamePublish() );
+                    publish();
                 }
             } else { // its not the 10th frame
 
-                if (pe.pinsDownOnThisThrow() == 10) {		// threw a strike
+                if (jdpins == 10) {		// threw a strike
                     canThrowAgain = false;
-                    publish( gamePublish() );
-                } else if (pe.getThrowNumber() == 2) {
+                    publish();
+                } else if (throwNumber == 2) {
                     canThrowAgain = false;
-                    publish( gamePublish() );
-                } else if (pe.getThrowNumber() == 3)
+                    publish();
+                } else if (throwNumber == 3)
                     System.out.println("I'm here...");
             }
         } else {								//  this is not a real throw, probably a reset
         }
     }
 
-    public GameEvent getGameEvent() {
-        return new GameEvent(party, bowlIndex, currentThrower, cumulScores, scores, frameNumber+1, curScores, ball);
-    }
 
     public void resetScores() {
         Iterator bowlIt = (party.getMembers()).iterator();

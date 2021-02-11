@@ -17,7 +17,6 @@ package observer;/* $Id$
  */
 
 
-import events.PinsetterEvent;
 
 public interface PinsetterObserver {
 
@@ -25,6 +24,6 @@ public interface PinsetterObserver {
 	 * 
 	 * defines the method for an object torecieve a pinsetter event
 	 */
-	public void receivePinsetterEvent(PinsetterEvent pe);
+	public void receivePinsetterEvent(boolean pins[], boolean foul, int throwNumber, int jdpins, int totalPinsDown);
 };
 
