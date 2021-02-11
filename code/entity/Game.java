@@ -281,10 +281,8 @@ public class Game implements PinsetterObserver {
             }
             scores.put( bowlIt.next(), toPut );
         }
-
-
-
         finished = false;
+        frameNumber = 0;
     }
 
     public void assignParty( Party theParty ) {
