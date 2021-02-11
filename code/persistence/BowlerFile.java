@@ -27,7 +27,7 @@ import java.io.*;
 public class BowlerFile {
 
 	/** The location of the bowelr database */
-	private static String BOWLER_DAT = "code/persistence/BOWLERS.DAT";
+	private static String BOWLER_DAT = "persistence/BOWLERS.DAT";
 
     /**
      * Retrieves bowler information from the database and returns a entity.Bowler objects with populated fields.

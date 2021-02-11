@@ -5,7 +5,6 @@ package view; /**
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-
 import entity.Bowler;
 import entity.Party;
 

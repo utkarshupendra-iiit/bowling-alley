@@ -198,7 +198,7 @@ public class LaneView implements GameObserver, ActionListener {
 								&& i % 2 == 1)
 							ballLabel[k][i].setText("/");
 						else if ( ((int[])((HashMap) le.getScore()).get(bowlers.get(k)))[i] == -2 ){
-							
+
 							ballLabel[k][i].setText("F");
 						} else
 							ballLabel[k][i].setText(

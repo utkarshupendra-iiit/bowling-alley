@@ -128,7 +128,7 @@ package entity;
  *   Revision 1.10  2003/01/26 20:44:05  ???
  *   small changes
  *
- * 
+ *
  */
 
 import events.LaneEvent;
@@ -169,14 +169,14 @@ public class Lane extends Thread {
 	}
 
 	/** run()
-	 * 
-	 * entry point for execution of this lane 
+	 *
+	 * entry point for execution of this lane
 	 */
 	public void run() {
-		
+
 		while (true) {
 			if (game.getParty() != null && !game.isFinished()) {	// we have a party on this lane,
-								// so next bower can take a throw
+				// so next bower can take a throw
 				game.startGame();
 				while (game.isHalted()) {
 					try {
@@ -188,14 +188,14 @@ public class Lane extends Thread {
 				int result = egp.getResult();
 				egp.distroy();
 				System.out.println("result was: " + result);
-				
+
 				// TODO: send record of scores to control desk
 				if (result == 1) {					// yes, want to play again
 					game.resetScores();
 					game.resetBowlerIterator();
-					
+
 				} else if (result == 2) {// no, dont want to play another game
-					Vector printVector;	
+					Vector printVector;
 					EndGameReport egr = new EndGameReport( ((Bowler)game.getParty().getMembers().get(0)).getNickName() + "'s Party", game.getParty());
 					printVector = egr.getResult();
 					Iterator scoreIt = game.getParty().getMembers().iterator();
@@ -217,8 +217,8 @@ public class Lane extends Thread {
 					}
 				}
 			}
-			
-			
+
+
 			try {
 				sleep(10);
 			} catch (Exception e) {}

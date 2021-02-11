@@ -13,7 +13,7 @@ import java.io.*;
 
 public class ScoreHistoryFile {
 
-	private static String SCOREHISTORY_DAT = "code/persistence/SCOREHISTORY.DAT";
+	private static String SCOREHISTORY_DAT = "persistence/SCOREHISTORY.DAT";
 
 	public static void addScore(String nick, String date, String score)
 		throws IOException, FileNotFoundException {

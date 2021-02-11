@@ -1,4 +1,5 @@
-package entity;/*
+package entity;
+/*
  * entity.Alley.java
  *
  * Version:

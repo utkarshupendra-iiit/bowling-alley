@@ -61,7 +61,9 @@ public class Game implements PinsetterObserver {
     public int getGameNumber() {
         return gameNumber;
     }
-
+    public void clearLane() {
+        party = null;
+    }
     private int gameNumber;
     private int[][] cumulScores;
 
