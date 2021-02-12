@@ -138,7 +138,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 			controlDesk.assignLane();
 		}
 		if (e.getSource().equals(finished)) {
-			win.hide();
+			win.setVisible(false);
 			System.exit(0);
 		}
 	}
