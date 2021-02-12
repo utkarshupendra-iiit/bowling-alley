@@ -16,7 +16,7 @@ package view;/* view.ControlDeskView.java
 import entity.ControlDesk;
 import entity.Lane;
 import entity.Pinsetter;
-import events.ControlDeskEvent;
+import entity.Queue;
 import observer.ControlDeskObserver;
 
 import java.awt.*;
@@ -161,7 +161,8 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 	 *
 	 */
 
-	public void receiveControlDeskEvent(ControlDeskEvent ce) {
-		partyList.setListData(ce.getPartyQueue());
+
+	public void receiveControlDeskEvent(Vector partyQueue) {
+		partyList.setListData(((Vector) partyQueue));
 	}
 }

@@ -131,7 +131,6 @@ package entity;
  *
  */
 
-import events.LaneEvent;
 import observer.LaneObserver;
 import view.EndGamePrompt;
 import view.EndGameReport;
@@ -154,10 +153,6 @@ public class Lane extends Thread {
         this.start();
     }
 
-    public void maintenanceCall() {
-        setHalted(true);
-        publish(new LaneEvent(true));
-    }
 
     public void setHalted(boolean halted) {
         this.halted = halted;
@@ -168,12 +163,17 @@ public class Lane extends Thread {
         game.publish();
     }
 
-    public void publish(LaneEvent event) {
-        if (subscribers.size() > 0) {
+    public void maintenanceCall() {
+        setHalted(true);
+        publish(true);
+    }
+
+    public void publish( boolean mechProb ) {
+        if( subscribers.size() > 0 ) {
             Iterator eventIterator = subscribers.iterator();
 
-            while (eventIterator.hasNext()) {
-                ((LaneObserver) eventIterator.next()).receiveLaneEvent(event);
+            while ( eventIterator.hasNext() ) {
+                ( (LaneObserver) eventIterator.next()).receiveLaneEvent( mechProb );
             }
         }
     }
