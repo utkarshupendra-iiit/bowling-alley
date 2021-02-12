@@ -119,7 +119,7 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		win.setLocation(
 				((screenSize.width) / 2) - ((win.getSize().width) / 2),
 				((screenSize.height) / 2) - ((win.getSize().height) / 2));
-		win.show();
+		win.setVisible(true);
 
 	}
 

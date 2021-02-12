@@ -60,7 +60,7 @@ public class LaneView implements GameObserver, ActionListener {
 	}
 
 	public void show() {
-		frame.show();
+		frame.setVisible(true);
 	}
 
 	public void hide() {
