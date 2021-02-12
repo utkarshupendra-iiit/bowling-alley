@@ -11,9 +11,12 @@ package observer;/* $Id$
  *
  */
 
-import events.GameEvent;
+import entity.Bowler;
+import entity.Party;
+
+import java.util.HashMap;
 
 public interface GameObserver {
-	void receiveGameEvent(GameEvent ge);
-}
+	public void receiveGameEvent(Party p, int bI, Bowler cT, int[][] cS, HashMap scores, int frameNum, int[] curScores, int ball);
+};
 

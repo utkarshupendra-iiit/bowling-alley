@@ -40,7 +40,6 @@ package entity;/* entity.ControlDesk.java
  *
  */
 
-import events.ControlDeskEvent;
 import observer.ControlDeskObserver;
 import persistence.BowlerFile;
 
@@ -134,7 +133,7 @@ public class ControlDesk extends Thread {
 				curLane.getGame().assignParty(((Party) partyQueue.next()));
 			}
 		}
-		publish(new ControlDeskEvent(getPartyQueue()));
+		publish(getPartyQueue());
 	}
 
     /**
@@ -159,7 +158,7 @@ public class ControlDesk extends Thread {
 		}
 		Party newParty = new Party(partyBowlers);
 		partyQueue.add(newParty);
-		publish(new ControlDeskEvent(getPartyQueue()));
+		publish(getPartyQueue());
 	}
 
     /**
@@ -210,14 +209,13 @@ public class ControlDesk extends Thread {
      *
      */
 
-	public void publish(ControlDeskEvent event) {
+	public void publish(Vector partyQueue) {
 		Iterator eventIterator = subscribers.iterator();
 		while (eventIterator.hasNext()) {
 			(
 				(ControlDeskObserver) eventIterator
 					.next())
-					.receiveControlDeskEvent(
-				event);
+					.receiveControlDeskEvent(partyQueue);
 		}
 	}
 
