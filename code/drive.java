@@ -1,6 +1,4 @@
 
-
-import entity.Alley;
 import entity.ControlDesk;
 import view.ControlDeskView;
 
