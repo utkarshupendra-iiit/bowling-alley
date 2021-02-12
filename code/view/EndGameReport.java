@@ -20,7 +20,6 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 
 	private JFrame win;
 	private JButton printButton, finished;
-	private JList memberList;
 	private Vector myVector;
 	private Vector retVal;
 
@@ -48,8 +47,8 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 		Iterator iter = (party.getMembers()).iterator();
 		while (iter.hasNext()){
 			myVector.add( ((Bowler)iter.next()).getNick() );
-		}	
-		memberList = new JList(myVector);
+		}
+		JList memberList = new JList(myVector);
 		memberList.setFixedCellWidth(120);
 		memberList.setVisibleRowCount(5);
 		memberList.addListSelectionListener(this);
@@ -57,7 +56,7 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 		//        partyPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		partyPanel.add(partyPane);
 
-		partyPanel.add( memberList );
+		partyPanel.add(memberList);
 
 		// Button Panel
 		// Button Panel

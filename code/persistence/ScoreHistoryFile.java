@@ -13,7 +13,7 @@ import java.io.*;
 
 public class ScoreHistoryFile {
 
-	private static String SCOREHISTORY_DAT = "persistence/SCOREHISTORY.DAT";
+	private static String SCOREHISTORY_DAT = "code/persistence/SCOREHISTORY.DAT";
 
 	public static void addScore(String nick, String date, String score)
 		throws IOException, FileNotFoundException {
@@ -27,7 +27,7 @@ public class ScoreHistoryFile {
 	}
 
 	public static Vector getScores(String nick)
-		throws IOException, FileNotFoundException {
+		throws IOException {
 		Vector scores = new Vector();
 
 		BufferedReader in =
@@ -43,5 +43,4 @@ public class ScoreHistoryFile {
 		}
 		return scores;
 	}
-
 }

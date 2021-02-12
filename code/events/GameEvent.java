@@ -60,7 +60,6 @@ public class GameEvent {
 		return score;
 	}
 
-
 	public int getIndex() {
 		return index;
 	}
@@ -85,5 +84,5 @@ public class GameEvent {
 		return bowler;
 	}
 
-};
+}
  

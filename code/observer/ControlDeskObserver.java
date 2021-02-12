@@ -17,6 +17,6 @@ import events.ControlDeskEvent;
 
 public interface ControlDeskObserver {
 
-	public void receiveControlDeskEvent(ControlDeskEvent ce);
+	void receiveControlDeskEvent(ControlDeskEvent ce);
 
 }

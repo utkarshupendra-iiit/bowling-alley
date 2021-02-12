@@ -22,7 +22,7 @@ import java.util.Vector;
 public class LaneView implements GameObserver, ActionListener {
 
 	private int roll;
-	private boolean initDone = true;
+	private boolean initDone;
 
 	JFrame frame;
 	Container cpanel;
@@ -176,34 +176,34 @@ public class LaneView implements GameObserver, ActionListener {
 				for (int i = 0; i <= le.getFrameNum() - 1; i++) {
 					if (lescores[k][i] != 0)
 						scoreLabel[k][i].setText(
-							(new Integer(lescores[k][i])).toString());
+							(Integer.valueOf(lescores[k][i])).toString());
 				}
 				for (int i = 0; i < 21; i++) {
-					if (((int[]) ((HashMap) le.getScore())
+					if (((int[]) le.getScore()
 						.get(bowlers.get(k)))[i]
 						!= -1)
-						if (((int[]) ((HashMap) le.getScore())
+						if (((int[]) le.getScore()
 							.get(bowlers.get(k)))[i]
 							== 10
 							&& (i % 2 == 0 || i == 19))
 							ballLabel[k][i].setText("X");
 						else if (
 							i > 0
-								&& ((int[]) ((HashMap) le.getScore())
+								&& ((int[]) le.getScore()
 									.get(bowlers.get(k)))[i]
-									+ ((int[]) ((HashMap) le.getScore())
+									+ ((int[]) le.getScore()
 										.get(bowlers.get(k)))[i
 									- 1]
 									== 10
 								&& i % 2 == 1)
 							ballLabel[k][i].setText("/");
-						else if ( ((int[])((HashMap) le.getScore()).get(bowlers.get(k)))[i] == -2 ){
+						else if ( ((int[]) le.getScore().get(bowlers.get(k)))[i] == -2 ){
 
 							ballLabel[k][i].setText("F");
 						} else
 							ballLabel[k][i].setText(
-								(new Integer(((int[]) ((HashMap) le.getScore())
-									.get(bowlers.get(k)))[i]))
+								(Integer.valueOf(((int[]) le.getScore()
+										.get(bowlers.get(k)))[i]))
 									.toString());
 				}
 			}

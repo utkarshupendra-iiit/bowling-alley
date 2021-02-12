@@ -14,6 +14,6 @@ package observer;/* $Id$
 import events.LaneEvent;
 
 public interface LaneObserver {
-	public void receiveLaneEvent(LaneEvent le);
-};
+	void receiveLaneEvent(LaneEvent le);
+}
 

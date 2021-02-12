@@ -14,6 +14,6 @@ package observer;/* $Id$
 import events.GameEvent;
 
 public interface GameObserver {
-	public void receiveGameEvent(GameEvent ge);
-};
+	void receiveGameEvent(GameEvent ge);
+}
 

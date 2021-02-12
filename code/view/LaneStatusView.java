@@ -6,7 +6,6 @@ package view; /**
  * Window>Preferences>Java>Code Generation.
  */
 
-import entity.Bowler;
 import entity.Lane;
 import entity.Pinsetter;
 import events.GameEvent;
@@ -19,15 +18,13 @@ import observer.PinsetterObserver;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.util.Vector;
-import java.util.Iterator;
-import entity.ScoreReport;
 
 public class LaneStatusView implements ActionListener, LaneObserver, GameObserver, PinsetterObserver {
 
 	private JPanel jp;
 
-	private JLabel curBowler, foul, pinsDown;
+	private JLabel curBowler;
+	private JLabel pinsDown;
 	private JButton viewLane;
 	private JButton viewPinSetter, maintenance;
 
@@ -60,7 +57,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, GameObserve
 		JLabel cLabel = new JLabel( "Now Bowling: " );
 		curBowler = new JLabel( "(no one)" );
 		JLabel fLabel = new JLabel( "Foul: " );
-		foul = new JLabel( " " );
+		JLabel foul = new JLabel(" ");
 		JLabel pdLabel = new JLabel( "Pins Down: " );
 		pinsDown = new JLabel( "0" );
 
@@ -100,10 +97,10 @@ public class LaneStatusView implements ActionListener, LaneObserver, GameObserve
 	public void actionPerformed( ActionEvent e ) {
 		if ( lane.getGame().getParty() != null ) {
 			if (e.getSource().equals(viewPinSetter)) {
-				if ( psShowing == false ) {
+				if (!psShowing) {
 					psv.show();
 					psShowing=true;
-				} else if ( psShowing == true ) {
+				} else if (psShowing) {
 					psv.hide();
 					psShowing=false;
 				}
@@ -111,10 +108,10 @@ public class LaneStatusView implements ActionListener, LaneObserver, GameObserve
 		}
 		if (e.getSource().equals(viewLane)) {
 			if ( lane.getGame().getParty() != null ) {
-				if ( laneShowing == false ) {
+				if (!laneShowing) {
 					lv.show();
 					laneShowing=true;
-				} else if ( laneShowing == true ) {
+				} else if (laneShowing) {
 					lv.hide();
 					laneShowing=false;
 				}
@@ -122,7 +119,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, GameObserve
 		}
 		if (e.getSource().equals(maintenance)) {
 			if ( lane.getGame().getParty() != null ) {
-				lane.getGame().unPauseGame();
+				lane.resumeGame();
 				maintenance.setBackground( Color.GREEN );
 			}
 		}
@@ -134,7 +131,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, GameObserve
 			}
 		}
 	public void receiveGameEvent(GameEvent ge) {
-		curBowler.setText( ( (Bowler)ge.getBowler()).getNickName() );
+		curBowler.setText( ge.getBowler().getNickName() );
 		if ( lane.getGame().getParty() == null ) {
 			viewLane.setEnabled( false );
 			viewPinSetter.setEnabled( false );
@@ -145,7 +142,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, GameObserve
 	}
 
 	public void receivePinsetterEvent(PinsetterEvent pe) {
-		pinsDown.setText( ( new Integer(pe.totalPinsDown()) ).toString() );
+		pinsDown.setText( (Integer.valueOf(pe.totalPinsDown())).toString() );
 	}
 
 }
