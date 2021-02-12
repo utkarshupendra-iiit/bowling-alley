@@ -99,10 +99,10 @@ public class Game implements PinsetterObserver {
                 if( i%2 == 0 && i < 18){
                     addCurrentBallToCumul(i, curScore);
                 } else if (i < 18){
-                    if(curScore[i] != -1 && i > 2){
-                        if(curScore[i] != -2){
-                            cumulScores[bowlIndex][i/2] += curScore[i];
-                        }
+                    if(curScore[i] != -1 && i > 2 && curScore[i] != -2){
+                        
+                        cumulScores[bowlIndex][i/2] += curScore[i]; // nested if else removed
+                        
                     }
                 }
                 if (i/2 == 9){
@@ -112,10 +112,9 @@ public class Game implements PinsetterObserver {
                     if(curScore[i] != -2){
                         cumulScores[bowlIndex][9] += curScore[i];
                     }
-                } else if (i/2 == 10) {
-                    if(curScore[i] != -2){
-                        cumulScores[bowlIndex][9] += curScore[i];
-                    }
+                } else if (i/2 == 10 && curScore[i] != -2) {
+                        cumulScores[bowlIndex][9] += curScore[i]; // nested if else removed
+
                 }
             }
         }
@@ -141,10 +140,10 @@ public class Game implements PinsetterObserver {
         cumulScores[bowlIndex][i/2] += 10;
         if(curScore[i+1] != -1) {
             cumulScores[bowlIndex][i/2] += curScore[i+1] + cumulScores[bowlIndex][(i/2)-1];
-            if (curScore[i+2] != -1){
-                if( curScore[i+2] != -2){
+            if (curScore[i+2] != -1 && curScore[i+2] != -2){
+
                     cumulScores[bowlIndex][(i/2)] += curScore[i+2];
-                }
+
             } else {
                 if( curScore[i+3] != -2){
                     cumulScores[bowlIndex][(i/2)] += curScore[i+3];
@@ -156,10 +155,10 @@ public class Game implements PinsetterObserver {
             } else {
                 cumulScores[bowlIndex][i/2] += curScore[i+2];
             }
-            if (curScore[i+3] != -1){
-                if( curScore[i+3] != -2){
+            if (curScore[i+3] != -1 && curScore[i+3] != -2){
+
                     cumulScores[bowlIndex][(i/2)] += curScore[i+3];
-                }
+
             } else {
                 cumulScores[bowlIndex][(i/2)] += curScore[i+4];
             }
