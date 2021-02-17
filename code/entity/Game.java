@@ -94,27 +94,28 @@ public class Game implements PinsetterObserver {
                 }
             }else {
                 //We're dealing with a normal throw, add it and be on our way.
-                if( i%2 == 0 && i < 18){
-                    addCurrentBallToCumul(i, curScore);
-                } else if (i < 18){
-                    if(curScore[i] != -1 && i > 2 && curScore[i] != -2){
-                        
-                        cumulScores[bowlIndex][i/2] += curScore[i]; // nested if else removed
-                        
-                    }
-                }
-                if (i/2 == 9){
-                    if (i == 18){
-                        cumulScores[bowlIndex][9] += cumulScores[bowlIndex][8];
-                    }
-                    if(curScore[i] != -2){
-                        cumulScores[bowlIndex][9] += curScore[i];
-                    }
-                } else if (i/2 == 10 && curScore[i] != -2) {
-                        cumulScores[bowlIndex][9] += curScore[i]; // nested if else removed
-
-                }
+                normalThrow(i, curScore);
             }
+        }
+    }
+
+    private void normalThrow(int i, int[] curScore) {
+        if( i%2 == 0 && i < 18){
+            addCurrentBallToCumul(i, curScore);
+        } else if (i < 18){
+            if(curScore[i] != -1 && i > 2 && curScore[i] != -2){
+                cumulScores[bowlIndex][i/2] += curScore[i]; // nested if else removed
+            }
+        }
+        if (i/2 == 9){
+            if (i == 18){
+                cumulScores[bowlIndex][9] += cumulScores[bowlIndex][8];
+            }
+            if(curScore[i] != -2){
+                cumulScores[bowlIndex][9] += curScore[i];
+            }
+        } else if (i/2 == 10 && curScore[i] != -2) {
+            cumulScores[bowlIndex][9] += curScore[i]; // nested if else removed
         }
     }
 
