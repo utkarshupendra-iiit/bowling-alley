@@ -3,6 +3,7 @@ package entity;
 import observer.ControlDeskObserver;
 import persistence.BowlerFile;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.io.*;
 
@@ -68,9 +69,7 @@ public class ControlDesk extends Thread {
 
 			patron = BowlerFile.getBowlerInfo(nickName);
 
-		} catch (FileNotFoundException e) {
-			System.err.println("Error..." + e);
-		} catch (IOException e) {
+		} catch (SQLException e) {
 			System.err.println("Error..." + e);
 		}
 

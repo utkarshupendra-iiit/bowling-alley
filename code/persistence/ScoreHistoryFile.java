@@ -8,39 +8,44 @@ package persistence; /**
 
 import entity.Score;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.io.*;
 
 public class ScoreHistoryFile {
 
-	private static String SCOREHISTORY_DAT = "code/persistence/SCOREHISTORY.DAT";
-
 	public static void addScore(String nick, String date, String score)
-		throws IOException, FileNotFoundException {
+		throws SQLException {
 
-		String data = nick + "\t" + date + "\t" + score + "\n";
+		String query = "insert into score(nick, date, score) values(?,?,?)";
+		Connection connection = DbConnection.getConnection();
+		PreparedStatement preparedStatement = connection.prepareStatement(query);
+		preparedStatement.setString(1, nick);
+		preparedStatement.setString(2, date);
+		preparedStatement.setString(3, score);
 
-		RandomAccessFile out = new RandomAccessFile(SCOREHISTORY_DAT, "rw");
-		out.skipBytes((int) out.length());
-		out.writeBytes(data);
-		out.close();
+		preparedStatement.execute();
 	}
 
 	public static Vector getScores(String nick)
-		throws IOException {
-		Vector scores = new Vector();
+		throws SQLException {
+		Connection connection = DbConnection.getConnection();
+		String query = "select nick, date, score from score where nick=?";
+		PreparedStatement preparedStatement = connection.prepareStatement(query);
+		preparedStatement.setString(1, nick);
 
-		BufferedReader in =
-			new BufferedReader(new FileReader(SCOREHISTORY_DAT));
-		String data;
-		while ((data = in.readLine()) != null) {
-			// File format is nick\tfname\te-mail
-			String[] scoredata = data.split("\t");
-			//"Nick: scoredata[0] Date: scoredata[1] entity.Score: scoredata[2]
-			if (nick.equals(scoredata[0])) {
-				scores.add(new Score(scoredata[0], scoredata[1], scoredata[2]));
-			}
+		ResultSet resultSet = preparedStatement.executeQuery();
+		Vector<Score> vector = new Vector<>();
+
+		while (resultSet.next()) {
+			Score score = new Score(resultSet.getString("nick"),
+					resultSet.getString("date"),
+					resultSet.getString("score"));
+			vector.add(score);
 		}
-		return scores;
+		return vector;
 	}
 }
