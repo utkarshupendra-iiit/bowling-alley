@@ -24,7 +24,7 @@ import java.sql.*;
 import java.util.*;
 import java.io.*;
 
-public class BowlerFile {
+public class BowlerDb {
 
     /**
      * Retrieves bowler information from the database and returns a entity.Bowler objects with populated fields.

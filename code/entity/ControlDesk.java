@@ -1,11 +1,10 @@
 package entity;
 
 import observer.ControlDeskObserver;
-import persistence.BowlerFile;
+import persistence.BowlerDb;
 
 import java.sql.SQLException;
 import java.util.*;
-import java.io.*;
 
 public class ControlDesk extends Thread {
 
@@ -67,7 +66,7 @@ public class ControlDesk extends Thread {
 		try {
 			// only one patron / nick.... no dupes, no checks
 
-			patron = BowlerFile.getBowlerInfo(nickName);
+			patron = BowlerDb.getBowlerInfo(nickName);
 
 		} catch (SQLException e) {
 			System.err.println("Error..." + e);
