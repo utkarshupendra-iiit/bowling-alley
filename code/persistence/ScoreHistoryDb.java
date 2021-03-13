@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.io.*;
 
-public class ScoreHistoryFile {
+public class ScoreHistoryDb {
 
 	public static void addScore(String nick, String date, String score)
 		throws SQLException {

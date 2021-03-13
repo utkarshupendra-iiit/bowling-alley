@@ -2,7 +2,7 @@ package entity;
 
 import observer.GameObserver;
 import observer.PinsetterObserver;
-import persistence.ScoreHistoryFile;
+import persistence.ScoreHistoryDb;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -286,7 +286,7 @@ public class Game implements PinsetterObserver {
         try{
             Date date = new Date();
             String dateString = "" + date.getHours() + ":" + date.getMinutes() + " " + date.getMonth() + "/" + date.getDay() + "/" + (date.getYear() + 1900);
-            ScoreHistoryFile.addScore(currentThrower.getNick(), dateString, Integer.valueOf(cumulScores[bowlIndex][9]).toString());
+            ScoreHistoryDb.addScore(currentThrower.getNick(), dateString, Integer.valueOf(cumulScores[bowlIndex][9]).toString());
         } catch (Exception e) {System.err.println("Exception in addScore. "+ e );}
     }
 
