@@ -1,28 +1,4 @@
-package ViewControl;/* view.AddPartyView.java
- *
- *  Version:
- * 		 $Id$
- *
- *  Revisions:
- * 		$Log: view.AddPartyView.java,v $
- * 		Revision 1.7  2003/02/20 02:05:53  ???
- * 		Fixed addPatron so that duplicates won't be created.
- *
- * 		Revision 1.6  2003/02/09 20:52:46  ???
- * 		Added comments.
- *
- * 		Revision 1.5  2003/02/02 17:42:09  ???
- * 		Made updates to migrate to observer model.
- *
- * 		Revision 1.4  2003/02/02 16:29:52  ???
- * 		Added events.ControlDeskEvent and observer.ControlDeskObserver. Updated entity.Queue to allow access to Vector so that contents could be viewed without destroying. Implemented observer model for most of ControlDesk.
- *
- *
- */
-
-/**
- * Class for GUI components need to add a party
- */
+package ViewControl;
 
 import persistence.SearchDb;
 
