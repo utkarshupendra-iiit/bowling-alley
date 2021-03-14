@@ -65,7 +65,7 @@ public class SearchDb {
         List<Map<String, String>> result = new ArrayList<>();
         while (resultSet.next()) {
             int i = 1;
-            Map<String, String> map = new HashMap<>();
+            Map<String, String> map = new LinkedHashMap<>();
             while (i <= resultSet.getMetaData().getColumnCount()) {
                 map.put(resultSet.getMetaData().getColumnName(i), resultSet.getString(i));
                 i++;
