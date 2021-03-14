@@ -1,7 +1,7 @@
 package ViewControl;
 /**
  * 
- * SMTP implementation based on code by R�al Gagnon mailto:real@rgagnon.com
+ * SMTP implementation based on code by Real Gagnon mailto:real@rgagnon.com
  * 
  */
 

@@ -76,7 +76,7 @@ public class AddPartyView implements ActionListener, ListSelectionListener {
 
 		partyList = new JList(empty);
 		partyList.setFixedCellWidth(120);
-		partyList.setVisibleRowCount(5);
+		partyList.setVisibleRowCount(10);
 		partyList.addListSelectionListener(this);
 		JScrollPane partyPane = new JScrollPane(partyList);
 		partyPanel.add(partyPane);

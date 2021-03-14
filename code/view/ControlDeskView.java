@@ -12,12 +12,13 @@ import javax.swing.*;
 import javax.swing.border.*;
 import Model.ControlDesk;
 import Model.Lane;
+import Model.ShowScores;
 
 import java.util.*;
 
 public class ControlDeskView implements ActionListener, Observer {
 
-	private JButton addParty, finished, assign;
+	private JButton addParty, finished, assign,showScore;
 	private JFrame win;
 	private JList partyList;
 	private int maxMembers; // 	The maximum  number of members in a party 
@@ -51,6 +52,13 @@ public class ControlDeskView implements ActionListener, Observer {
 		addParty.addActionListener(this);
 		addPartyPanel.add(addParty);
 		controlsPanel.add(addPartyPanel);
+
+		showScore = new JButton("Show Scores");
+		JPanel showScorePanel = new JPanel();
+		showScorePanel.setLayout(new FlowLayout());
+		showScore.addActionListener(this);
+		showScorePanel.add(showScore);
+		controlsPanel.add(showScorePanel);
 
 		assign = new JButton("Assign Lanes");
 		JPanel assignPanel = new JPanel();
@@ -132,6 +140,9 @@ public class ControlDeskView implements ActionListener, Observer {
 		if (e.getSource().equals(addParty)) {
 			AddPartyView addPartyWin = new AddPartyView(this, maxMembers);
 		}
+		if (e.getSource().equals(showScore)) {
+            ShowScores showScoreWin = new ShowScores();
+        }
 		if (e.getSource().equals(assign)) {
 			controlDesk.assignLane();
 		}
