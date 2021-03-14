@@ -6,6 +6,7 @@ package Model;
  * @author Hunter Caskey & Sultan Mira
  *
  */
+
 public class ScoreCalculator {
 
 	private int[][] cumulScores; 
@@ -24,6 +25,8 @@ public class ScoreCalculator {
 
 		int frameIndex;
 		int prevScore = 0;
+		int penalty=0;
+		int flag =0;
 		
 		for(int i = 0; i < currentRoll; i++){
 			boolean even = i % 2 == 0;
@@ -42,6 +45,20 @@ public class ScoreCalculator {
 					prevScore += normal(i, bowlersScores);
 				}
 			}
+			if(i>1) {
+				penalty = calculatePenalty(i, bowlersScores);
+				prevScore = prevScore - penalty;
+
+				}
+			if(i==2 && bowlersScores[0]==0 && bowlersScores[1]==0)
+			{
+				penalty = bowlersScores[2]/2;
+				prevScore=prevScore- penalty;
+			}
+
+
+
+
 			
 			frameIndex = i / 2 ;
 			if(i > 19){ // Last frame could have three throws 
@@ -66,7 +83,7 @@ public class ScoreCalculator {
 		}
 		return scoreSum;
 	}
-	
+
 	private int spare(int index, int[] currentScores){
 		if(index > 17){
 			return (10);
@@ -88,4 +105,17 @@ public class ScoreCalculator {
 		}
 		return(currentScores[index]);
 	}
-}
+	private int calculatePenalty (int index,int[] currentScores) {
+		if (currentScores[index] == currentScores[index - 1] && currentScores[index] == 0) {
+			int max = currentScores[0];
+			for (int i = 0; i < index - 1; i++)
+				if (currentScores[i] > max) {
+					max = currentScores[i];
+				}
+			return max / 2;
+		}
+		return 0;
+	}
+
+
+	}
