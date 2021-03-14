@@ -1,4 +1,5 @@
-package view; /**
+package ViewControl;
+/**
  *
  * To change this generated comment edit the template variable "typecomment":
  * Window>Preferences>Java>Templates.
@@ -9,24 +10,16 @@ package view; /**
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-
-import java.util.*;
-import java.text.*;
 
 public class EndGamePrompt implements ActionListener {
 
 	private JFrame win;
 	private JButton yesButton, noButton;
-
 	private int result;
-
-	private String selectedNick, selectedMember;
-
+	
+	
 	public EndGamePrompt( String partyName ) {
-
-		result =0;
+		result = 0;
 		
 		win = new JFrame("Another Game for " + partyName + "?" );
 		win.getContentPane().setLayout(new BorderLayout());
@@ -39,7 +32,7 @@ public class EndGamePrompt implements ActionListener {
 		JPanel labelPanel = new JPanel();
 		labelPanel.setLayout(new FlowLayout());
 		
-		JLabel message = new JLabel( "Party " + partyName
+		JLabel message = new JLabel( "Party " + partyName 
 			+ " has finished bowling.\nWould they like to bowl another game?" );
 
 		labelPanel.add( message );
@@ -47,8 +40,6 @@ public class EndGamePrompt implements ActionListener {
 		// Button Panel
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(1, 2));
-
-		Insets buttonMargin = new Insets(4, 4, 4, 4);
 
 		yesButton = new JButton("Yes");
 		JPanel yesButtonPanel = new JPanel();
@@ -78,7 +69,7 @@ public class EndGamePrompt implements ActionListener {
 		win.setLocation(
 			((screenSize.width) / 2) - ((win.getSize().width) / 2),
 			((screenSize.height) / 2) - ((win.getSize().height) / 2));
-		win.setVisible(true);
+		win.show();
 
 	}
 
@@ -89,7 +80,6 @@ public class EndGamePrompt implements ActionListener {
 		if (e.getSource().equals(noButton)) {		
 			result=2;
 		}
-
 	}
 
 	public int getResult() {
@@ -104,8 +94,6 @@ public class EndGamePrompt implements ActionListener {
 	}
 	
 	public void distroy() {
-		win.setVisible(false);
+		win.hide();
 	}
-	
 }
-

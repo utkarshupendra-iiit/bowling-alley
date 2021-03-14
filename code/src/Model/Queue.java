@@ -1,19 +1,11 @@
-package entity;/* entity.Queue.java
- *
- *  Version
- *  $Id$
- * 
- *  Revisions:
- * 		$Log$
- * 
- */
- 
+package Model;
+
 import java.util.Vector;
  
 public class Queue {
 	private Vector v;
 	
-	/** entity.Queue()
+	/** Queue()
 	 * 
 	 * creates a new queue
 	 */

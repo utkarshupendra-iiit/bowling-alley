@@ -1,35 +1,27 @@
-package view; /**
- *
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of type comments go to
- * Window>Preferences>Java>Code Generation.
- */
-import entity.Bowler;
-import entity.Party;
+package ViewControl;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
-
+import Model.Bowler;
+import Model.Party;
 import java.util.*;
 
 public class EndGameReport implements ActionListener, ListSelectionListener {
 
 	private JFrame win;
 	private JButton printButton, finished;
-	private Vector myVector;
+	private JList memberList;
 	private Vector retVal;
-
 	private int result;
 
 	private String selectedMember;
 
 	public EndGameReport( String partyName, Party party ) {
 	
-		result =0;
+		result = 0;
 		retVal = new Vector();
 		win = new JFrame("End Game Report for " + partyName + "?" );
 		win.getContentPane().setLayout(new BorderLayout());
@@ -47,16 +39,15 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 		Iterator iter = (party.getMembers()).iterator();
 		while (iter.hasNext()){
 			myVector.add( ((Bowler)iter.next()).getNick() );
-		}
-		JList memberList = new JList(myVector);
+		}	
+		memberList = new JList(myVector);
 		memberList.setFixedCellWidth(120);
 		memberList.setVisibleRowCount(5);
 		memberList.addListSelectionListener(this);
 		JScrollPane partyPane = new JScrollPane(memberList);
-		//        partyPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		partyPanel.add(partyPane);
 
-		partyPanel.add(memberList);
+		partyPanel.add( memberList );
 
 		// Button Panel
 		// Button Panel
@@ -93,7 +84,7 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 		win.setLocation(
 			((screenSize.width) / 2) - ((win.getSize().width) / 2),
 			((screenSize.height) / 2) - ((win.getSize().height) / 2));
-		win.setVisible(true);
+		win.show();
 
 	}
 
@@ -103,10 +94,9 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 			retVal.add(selectedMember);
 		}
 		if (e.getSource().equals(finished)) {		
-			win.setVisible(false);
+			win.hide();
 			result = 1;
 		}
-
 	}
 
 	public void valueChanged(ListSelectionEvent e) {
@@ -126,7 +116,7 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 	}
 	
 	public void destroy() {
-		win.setVisible(false);
+		win.hide();
 	}
 
 	public static void main( String args[] ) {
@@ -137,7 +127,5 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 		Party party = new Party( bowlers );
 		String partyName="wank";
 		EndGameReport e = new EndGameReport( partyName, party );
-	}
-	
+	}	
 }
-

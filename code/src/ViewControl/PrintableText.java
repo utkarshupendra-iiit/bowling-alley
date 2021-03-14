@@ -1,7 +1,4 @@
-package view; /**
- *
- */
-
+package ViewControl;
 import java.awt.*;
 import java.awt.print.*;
 import java.awt.geom.*;
@@ -40,8 +37,6 @@ public class PrintableText implements Printable {
 				layout.draw(g2d, (float) pen.x, (float) (pen.y + i*14));
 			}
 		}
-
 		return PAGE_EXISTS;
 	}
-
 }
