@@ -146,7 +146,8 @@ public class QueryView extends JFrame implements ActionListener, ItemListener {
                 Object[] cols = new Object[]{"Name", "Min Score"};
                 Object[][] data = parseMapToData(result, cols.length);
                 QueryResultView queryResultView = new QueryResultView(cols, data);
-            } if (e.getSource().equals(listAllBowlers)) {
+            }
+            if (e.getSource().equals(listAllBowlers)) {
                 List<Map<String, String>> result = SearchDb.getAllBowlers();
                 Object[] cols = SearchDb.getColumnsByTable(String.valueOf(queryForInput.getSelectedItem()));
                 Object[][] data = parseMapToData(result, cols.length);
