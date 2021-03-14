@@ -15,20 +15,22 @@ package view;/* view.ControlDeskView.java
 
 import entity.ControlDesk;
 import entity.Lane;
-import entity.Pinsetter;
-import entity.Queue;
 import observer.ControlDeskObserver;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.*;
-
-import java.util.*;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Vector;
 
 public class ControlDeskView implements ActionListener, ControlDeskObserver {
 
-	private JButton addParty, finished, assign;
+	private JButton addParty, finished, assign, query;
 	private JFrame win;
 	private JList partyList;
 	
@@ -57,9 +59,10 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 
 		// Controls Panel
 		JPanel controlsPanel = new JPanel();
-		controlsPanel.setLayout(new GridLayout(3, 1));
+		controlsPanel.setLayout(new GridLayout(4, 1));
 		controlsPanel.setBorder(new TitledBorder("Controls"));
 		Cbutton cb_c = new Cbutton(this);
+		query = cb_c.createButton("Query Window", controlsPanel);
 		addParty = cb_c.createButton("Add Party", controlsPanel);
 		assign = cb_c.createButton("Assign Lanes", controlsPanel);
 		finished = cb_c.createButton("Finished", controlsPanel);
@@ -140,6 +143,9 @@ public class ControlDeskView implements ActionListener, ControlDeskObserver {
 		if (e.getSource().equals(finished)) {
 			win.setVisible(false);
 			System.exit(0);
+		}
+		if (e.getSource().equals(query)) {
+			QueryView queryView = new QueryView();
 		}
 	}
 
