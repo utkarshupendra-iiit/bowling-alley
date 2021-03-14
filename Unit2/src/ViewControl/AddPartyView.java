@@ -26,17 +26,17 @@ package ViewControl;
  *
  */
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-
 import Model.Bowler;
-import Model.BowlerFile;
+import persistence.BowlerDb;
 
-import java.util.*;
-import java.text.*;
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Vector;
 
 /**
  * Constructor for GUI used to Add Parties to the waiting party queue.
@@ -87,7 +87,7 @@ public class AddPartyView implements ActionListener, ListSelectionListener {
 		bowlerPanel.setBorder(new TitledBorder("Bowler Database"));
 
 		try {
-			bowlerdb = new Vector(BowlerFile.getBowlers());
+			bowlerdb = new Vector(BowlerDb.getBowlers());
 		} catch (Exception e) {
 			System.err.println("File Error");
 			bowlerdb = new Vector();
@@ -212,13 +212,13 @@ public class AddPartyView implements ActionListener, ListSelectionListener {
 	 */
 	public void updateNewPatron(NewPatronView newPatron) {
 		try {
-			Bowler checkBowler = BowlerFile.getBowlerInfo( newPatron.getNick() );
+			Bowler checkBowler = BowlerDb.getBowlerInfo( newPatron.getNick() );
 			if ( checkBowler == null ) {
-				BowlerFile.putBowlerInfo(
+				BowlerDb.putBowlerInfo(
 						newPatron.getNick(),
 						newPatron.getFull(),
 						newPatron.getEmail());
-				bowlerdb = new Vector(BowlerFile.getBowlers());
+				bowlerdb = new Vector(BowlerDb.getBowlers());
 				allBowlers.setListData(bowlerdb);
 				party.add(newPatron.getNick());
 				partyList.setListData(party);

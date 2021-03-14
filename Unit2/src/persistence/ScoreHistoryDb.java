@@ -6,19 +6,19 @@ package persistence; /**
  * Window>Preferences>Java>Code Generation.
  */
 
-import entity.Score;
+
+import Model.Score;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
-import java.io.*;
+import java.util.Vector;
 
 public class ScoreHistoryDb {
 
 	public static void addScore(String nick, String date, String score)
-		throws SQLException {
+			throws SQLException {
 
 		String query = "insert into score(nick, date, score) values(?,?,?)";
 		Connection connection = DbConnection.getConnection();
@@ -31,7 +31,7 @@ public class ScoreHistoryDb {
 	}
 
 	public static Vector getScores(String nick)
-		throws SQLException {
+			throws SQLException {
 		Connection connection = DbConnection.getConnection();
 		String query = "select nick, date, score from score where nick=?";
 		PreparedStatement preparedStatement = connection.prepareStatement(query);

@@ -5,8 +5,13 @@ package Model;
  *
  */
 
-import java.util.*;
-import java.io.*;
+import persistence.BowlerDb;
+
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Observable;
+import java.util.Vector;
 
 public class ControlDesk extends Observable implements Runnable {
 
@@ -17,12 +22,7 @@ public class ControlDesk extends Observable implements Runnable {
 	/** The number of lanes represented */
 	private int numLanes;
 
-	/**
-	 * Constructor for the ControlDesk class
-	 *
-	 * @param numlanes	the numbler of lanes to be represented
-	 *
-	 */
+
 	public ControlDesk(int numLanes) {
 		this.numLanes = numLanes;
 		lanes = new HashSet(numLanes);
@@ -57,10 +57,8 @@ public class ControlDesk extends Observable implements Runnable {
 	private Bowler registerPatron(String nickName) {
 		Bowler patron = null;
 		try {
-			patron = BowlerFile.getBowlerInfo(nickName);
-		} catch (FileNotFoundException e) {
-			System.err.println("Error..." + e);
-		} catch (IOException e) {
+			patron = BowlerDb.getBowlerInfo(nickName);
+		} catch (SQLException e) {
 			System.err.println("Error..." + e);
 		}
 		return patron;

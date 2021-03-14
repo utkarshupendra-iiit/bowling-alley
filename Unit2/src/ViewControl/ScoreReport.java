@@ -5,14 +5,19 @@ package ViewControl;
  * 
  */
 
-import java.io.*;
-import java.util.Vector;
 import Model.Bowler;
 import Model.Score;
-import Model.ScoreHistoryFile;
+import persistence.ScoreHistoryDb;
+
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 import java.util.Iterator;
-import java.net.*;
-import java.awt.print.*;
+import java.util.Vector;
 
 public class ScoreReport {
 
@@ -23,7 +28,7 @@ public class ScoreReport {
 		String full = bowler.getFullName();
 		Vector v = null;
 		try{
-			v = ScoreHistoryFile.getScores(nick);
+			v = ScoreHistoryDb.getScores(nick);
 		} catch (Exception e){System.err.println("Error: " + e);}
 		
 		Iterator scoreIt = v.iterator();
