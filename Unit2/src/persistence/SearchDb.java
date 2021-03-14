@@ -46,13 +46,13 @@ public class SearchDb {
         String query;
         switch (type) {
             case "AVG":
-                query = "select nick, avg(score) from score group by nick";
+                query = "select nick, avg(score) from score group by nick order by cast(avg(score) as float) desc";
                 break;
             case "MAX":
-                query = "select nick, max(score) from score group by nick";
+                query = "select nick, max(score) from score group by nick order by cast(max(score) as integer) desc";
                 break;
             case "MIN":
-                query = "select nick, min(score) from score group by nick";
+                query = "select nick, min(score) from score group by nick order by cast(min(score) as integer)";
                 break;
             default:
                 return new ArrayList<>();
