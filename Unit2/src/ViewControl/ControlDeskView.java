@@ -6,18 +6,21 @@ package ViewControl;
  *
  */
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.*;
 import Model.ControlDesk;
 import Model.Lane;
 
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.*;
 
 public class ControlDeskView implements ActionListener, Observer {
 
-	private JButton addParty, finished, assign;
+	private JButton addParty, finished, assign, query;
 	private JFrame win;
 	private JList partyList;
 	private int maxMembers; // 	The maximum  number of members in a party 
@@ -45,25 +48,12 @@ public class ControlDeskView implements ActionListener, Observer {
 		controlsPanel.setLayout(new GridLayout(3, 1));
 		controlsPanel.setBorder(new TitledBorder("Controls"));
 
-		addParty = new JButton("Add Party");
-		JPanel addPartyPanel = new JPanel();
-		addPartyPanel.setLayout(new FlowLayout());
-		addParty.addActionListener(this);
-		addPartyPanel.add(addParty);
-		controlsPanel.add(addPartyPanel);
+		Cbutton cb_c = new Cbutton(this);
+		query = cb_c.createButton("Query Window", controlsPanel);
+		addParty = cb_c.createButton("Add Party", controlsPanel);
+		assign = cb_c.createButton("Assign Lanes", controlsPanel);
+		finished = cb_c.createButton("Finished", controlsPanel);
 
-		assign = new JButton("Assign Lanes");
-		JPanel assignPanel = new JPanel();
-		assignPanel.setLayout(new FlowLayout());
-		assign.addActionListener(this);
-		assignPanel.add(assign);
-
-		finished = new JButton("Finished");
-		JPanel finishedPanel = new JPanel();
-		finishedPanel.setLayout(new FlowLayout());
-		finished.addActionListener(this);
-		finishedPanel.add(finished);
-		controlsPanel.add(finishedPanel);
 
 		// Lane Status Panel
 		JPanel laneStatusPanel = new JPanel();
@@ -119,7 +109,7 @@ public class ControlDeskView implements ActionListener, Observer {
 		win.setLocation(
 			((screenSize.width) / 2) - ((win.getSize().width) / 2),
 			((screenSize.height) / 2) - ((win.getSize().height) / 2));
-		win.show();
+		win.setVisible(true);
 	}
 
 	/**
@@ -136,8 +126,11 @@ public class ControlDeskView implements ActionListener, Observer {
 			controlDesk.assignLane();
 		}
 		if (e.getSource().equals(finished)) {
-			win.hide();
+			win.setVisible(false);
 			System.exit(0);
+		}
+		if (e.getSource().equals(query)) {
+			QueryView queryView = new QueryView();
 		}
 	}
 

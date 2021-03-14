@@ -1,4 +1,4 @@
-package view;
+package ViewControl;
 
 import javax.swing.*;
 

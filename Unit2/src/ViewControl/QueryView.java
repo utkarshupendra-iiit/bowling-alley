@@ -1,4 +1,4 @@
-package view;/* view.AddPartyView.java
+package ViewControl;/* view.AddPartyView.java
  *
  *  Version:
  * 		 $Id$
@@ -70,8 +70,10 @@ public class QueryView extends JFrame implements ActionListener, ItemListener {
         c.add(queryFor);
 
         Object[] tables = new String[0];
+        Object[] cols = new String[0];
         try {
             tables = SearchDb.getTables();
+            cols = SearchDb.getColumnsByTable(String.valueOf(tables[0]));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -86,7 +88,7 @@ public class QueryView extends JFrame implements ActionListener, ItemListener {
         queryUsing.setLocation(100, 150);
         c.add(queryUsing);
 
-        queryUsingInput = createComboBox(250, 150, new String[]{});
+        queryUsingInput = createComboBox(250, 150, cols);
         c.add(queryUsingInput);
 
         queryValue = new JLabel("Query Value: ");
@@ -117,12 +119,6 @@ public class QueryView extends JFrame implements ActionListener, ItemListener {
         c.add(reset);
 
         setVisible(true);
-    }
-
-    private JTable createTable(int x, int y, Object[] cols, Object[][] data) {
-        JTable table = new JTable(data, cols);
-        table.setBounds(x, y, 300, 150);
-        return table;
     }
 
     @Override
