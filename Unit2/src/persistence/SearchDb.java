@@ -32,6 +32,36 @@ public class SearchDb {
         PreparedStatement preparedStatement = DbConnection.getConnection().prepareStatement(query);
         preparedStatement.setString(1, value);
         ResultSet resultSet = preparedStatement.executeQuery();
+        return getMapFromResultSet(resultSet);
+    }
+
+    public static List<Map<String, String>> getAllBowlers() throws SQLException {
+        String query = String.format("select * from bowler");
+        PreparedStatement preparedStatement = DbConnection.getConnection().prepareStatement(query);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return getMapFromResultSet(resultSet);
+    }
+
+    public static List<Map<String, String>> getPlayerWiseScores(String type) throws SQLException {
+        String query;
+        switch (type) {
+            case "AVG":
+                query = "select nick, avg(score) from score group by nick";
+                break;
+            case "MAX":
+                query = "select nick, max(score) from score group by nick";
+                break;
+            case "MIN":
+                query = "select nick, min(score) from score group by nick";
+                break;
+            default:
+                return new ArrayList<>();
+        }
+        ResultSet resultSet = DbConnection.getConnection().createStatement().executeQuery(query);
+        return getMapFromResultSet(resultSet);
+    }
+
+    private static List<Map<String, String>> getMapFromResultSet(ResultSet resultSet) throws SQLException {
         List<Map<String, String>> result = new ArrayList<>();
         while (resultSet.next()) {
             int i = 1;
