@@ -23,10 +23,10 @@ public class Game implements PinsetterObserver {
     private Pinsetter setter;
     private int frameNumber;
     private Vector subscribers;
-    private int[][] finalScores;
+    private float[][] finalScores;
     private int bowlIndex;
 
-    public int[][] getFinalScores() {
+    public float[][] getFinalScores() {
         return finalScores;
     }
 
@@ -51,7 +51,7 @@ public class Game implements PinsetterObserver {
     }
 
     private int gameNumber;
-    private int[][] cumulScores;
+    private float[][] cumulScores;
 
     public Game() {
         this.finished = false;
@@ -76,10 +76,35 @@ public class Game implements PinsetterObserver {
         int current = 2*(frame - 1)+ball-1;
         //Iterate through each ball until the current one.
         for (int i = 0; i != current+2; i++){
+            if(i==8){
+                float diff;
+                if(curScore[0] + curScore[1] == 0){
+                    diff = (cumulScores[bowlIndex][1]-cumulScores[bowlIndex][0])/2;
+                    cumulScores[bowlIndex][0] -= diff;
+                    for(int j=1; j<i/2; j++){
+                        cumulScores[bowlIndex][j]-=diff;
+                    }
+                }
+            }
             //Spare:
-            if( i%2 == 1 && curScore[i - 1] + curScore[i] == 10 && i < current - 1 && i < 19){
-                cumulScores[bowlIndex][(i/2)] += curScore[i+1] + curScore[i];
-            } else if( i < current && i%2 == 0 && curScore[i] == 10  && i < 18){
+            if( i%2 == 1 && curScore[i - 1] + curScore[i] == 10 && i < current - 1 && i < 19) {
+                cumulScores[bowlIndex][(i / 2)] += curScore[i + 1] + curScore[i];
+            }
+            else if(i%2 == 1 && curScore[i-1] + curScore[i] == 0 && i < 20 && i/2>0){
+                float highest = 0, sum_curr, sum_prev;
+                for(int j = 0; j<i/2; j++){
+                    sum_curr = cumulScores[bowlIndex][j];
+                    sum_prev = 0;
+                    if(j>0){
+                        sum_prev = cumulScores[bowlIndex][j-1];
+                    }
+                    if(sum_curr - sum_prev>highest){
+                        highest = sum_curr - sum_prev;
+                    }
+                }
+                cumulScores[bowlIndex][(i/2)] -= highest/2;
+            }
+            else if( i < current && i%2 == 0 && curScore[i] == 10  && i < 18){
                 strikeballs = 0;
                 //This ball is the first ball, and was a strike.
                 //If we can get 2 balls after it, good add them to cumul.
@@ -87,7 +112,7 @@ public class Game implements PinsetterObserver {
 
                 if (strikeballs == 2){
                     //Add up the strike.
-                    //Add the next two balls to the current cumulscore.
+                    //Add the next two balls to the current cumulScores.
                     setCumulForNextTwoBalls(i, curScore);
                 } else {
                     break;
@@ -141,7 +166,7 @@ public class Game implements PinsetterObserver {
             cumulScores[bowlIndex][i/2] += curScore[i+1] + cumulScores[bowlIndex][(i/2)-1];
             if (curScore[i+2] != -1 && curScore[i+2] != -2){
 
-                    cumulScores[bowlIndex][(i/2)] += curScore[i+2];
+                cumulScores[bowlIndex][(i/2)] += curScore[i+2];
 
             } else {
                 if( curScore[i+3] != -2){
@@ -156,7 +181,7 @@ public class Game implements PinsetterObserver {
             }
             if (curScore[i+3] != -1 && curScore[i+3] != -2){
 
-                    cumulScores[bowlIndex][(i/2)] += curScore[i+3];
+                cumulScores[bowlIndex][(i/2)] += curScore[i+3];
 
             } else {
                 cumulScores[bowlIndex][(i/2)] += curScore[i+4];
@@ -192,7 +217,7 @@ public class Game implements PinsetterObserver {
         publish();
     }
 
-    public void publish( Party p, int bI, Bowler cT, int[][] cS, HashMap scores, int frameNum, int[] curScores, int ball) {
+    public void publish( Party p, int bI, Bowler cT, float[][] cS, HashMap scores, int frameNum, int[] curScores, int ball) {
         if( subscribers.size() > 0 ) {
             Iterator eventIterator = subscribers.iterator();
 
@@ -238,7 +263,7 @@ public class Game implements PinsetterObserver {
 
     public void receivePinsetterEvent(boolean pins[], boolean foul, int throwNumber, int jdpins, int totalPinsDown) {
 
-        if (jdpins >=  0) {			// this is a real throw
+        if (jdpins >=  0) {         // this is a real throw
             markScore(currentThrower, frameNumber + 1, throwNumber, jdpins);
             if (frameNumber == 9) {
                 tenthFrameThrow(totalPinsDown, throwNumber);
@@ -266,8 +291,8 @@ public class Game implements PinsetterObserver {
         party = theParty;
         resetBowlerIterator();
         curScores = new int[party.getMembers().size()];
-        cumulScores = new int[party.getMembers().size()][10];
-        finalScores = new int[party.getMembers().size()][128]; //Hardcoding a max of 128 games, bite me.
+        cumulScores = new float[party.getMembers().size()][10];
+        finalScores = new float[party.getMembers().size()][128]; //Hardcoding a max of 128 games, bite me.
         gameNumber = 0;
         resetScores();
     }
@@ -277,7 +302,7 @@ public class Game implements PinsetterObserver {
     }
 
     private void throwBall() {
-        setter.ballThrown();		// simulate the thrower's ball hiting
+        setter.ballThrown();        // simulate the thrower's ball hiting
         ball++;
     }
 
@@ -286,7 +311,7 @@ public class Game implements PinsetterObserver {
         try{
             Date date = new Date();
             String dateString = "" + date.getHours() + ":" + date.getMinutes() + " " + date.getMonth() + "/" + date.getDay() + "/" + (date.getYear() + 1900);
-            ScoreHistoryFile.addScore(currentThrower.getNick(), dateString, Integer.valueOf(cumulScores[bowlIndex][9]).toString());
+            ScoreHistoryFile.addScore(currentThrower.getNick(), dateString, String.valueOf(cumulScores[bowlIndex][9]).toString());
         } catch (Exception e) {System.err.println("Exception in addScore. "+ e );}
     }
 

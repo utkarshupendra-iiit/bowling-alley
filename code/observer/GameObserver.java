@@ -17,6 +17,6 @@ import entity.Party;
 import java.util.HashMap;
 
 public interface GameObserver {
-	public void receiveGameEvent(Party p, int bI, Bowler cT, int[][] cS, HashMap scores, int frameNum, int[] curScores, int ball);
+	public void receiveGameEvent(Party p, int bI, Bowler cT, float[][] cS, HashMap scores, int frameNum, int[] curScores, int ball);
 };
 

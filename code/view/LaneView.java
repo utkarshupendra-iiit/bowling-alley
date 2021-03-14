@@ -132,7 +132,7 @@ public class LaneView implements GameObserver, ActionListener {
 		return panel;
 	}
 
-	public void receiveGameEvent(Party p, int bI, Bowler cT, int[][] cS, HashMap scores, int frameNum, int[] curScores, int ball) {
+	public void receiveGameEvent(Party p, int bI, Bowler cT, float[][] cS, HashMap scores, int frameNum, int[] curScores, int ball) {
 		if (lane.getGame().getParty() != null) {
 			int numBowlers = p.getMembers().size();
 			while (!initDone) {
@@ -170,12 +170,12 @@ public class LaneView implements GameObserver, ActionListener {
 
 			}
 
-			int[][] lescores = cS;
+			float[][] lescores = cS;
 			for (int k = 0; k < numBowlers; k++) {
 				for (int i = 0; i <= frameNum - 1; i++) {
 					if (lescores[k][i] != 0)
 						scoreLabel[k][i].setText(
-							(Integer.valueOf(lescores[k][i])).toString());
+							(String.valueOf(lescores[k][i])).toString());
 				}
 				for (int i = 0; i < 21; i++) {
 					if (((int[]) ((HashMap) scores)

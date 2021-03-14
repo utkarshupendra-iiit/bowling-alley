@@ -131,7 +131,7 @@ public class LaneStatusView implements ActionListener, LaneObserver, GameObserve
 		}
 	}
 
-	public void receiveGameEvent(Party p, int bI, Bowler cT, int[][] cS, HashMap scores, int frameNum, int[] curScores, int ball) {
+	public void receiveGameEvent(Party p, int bI, Bowler cT, float[][] cS, HashMap scores, int frameNum, int[] curScores, int ball) {
 		curBowler.setText( ( (Bowler)cT).getNickName() );
 		if ( lane.getGame().getParty() == null ) {
 			viewLane.setEnabled( false );
