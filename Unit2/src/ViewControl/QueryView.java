@@ -38,37 +38,27 @@ public class QueryView extends JFrame implements ActionListener, ItemListener {
         c.setLayout(null);
 
         queryPlayerScoreAvg = new JButton("Player Wise Average Score");
-        queryPlayerScoreAvg.setFont(new Font("Arial", Font.PLAIN, 10));
-        queryPlayerScoreAvg.setSize(150, 20);
-        queryPlayerScoreAvg.setLocation(100, 100);
+        setComponentProperties(queryPlayerScoreAvg, 10, 150, 20, 100, 100);
         queryPlayerScoreAvg.addActionListener(this);
         c.add(queryPlayerScoreAvg);
 
         queryPlayerScoreMax = new JButton("Player Wise Max Score");
-        queryPlayerScoreMax.setFont(new Font("Arial", Font.PLAIN, 10));
-        queryPlayerScoreMax.setSize(150, 20);
-        queryPlayerScoreMax.setLocation(270, 100);
+        setComponentProperties(queryPlayerScoreMax, 10, 150, 20, 270, 100);
         queryPlayerScoreMax.addActionListener(this);
         c.add(queryPlayerScoreMax);
 
         queryPlayerScoreMin = new JButton("Player Wise Min Score");
-        queryPlayerScoreMin.setFont(new Font("Arial", Font.PLAIN, 10));
-        queryPlayerScoreMin.setSize(150, 20);
-        queryPlayerScoreMin.setLocation(270, 50);
+        setComponentProperties(queryPlayerScoreMin, 10, 150, 20, 270, 50);
         queryPlayerScoreMin.addActionListener(this);
         c.add(queryPlayerScoreMin);
 
         listAllBowlers = new JButton("List All Bowlers");
-        listAllBowlers.setFont(new Font("Arial", Font.PLAIN, 10));
-        listAllBowlers.setSize(150, 20);
-        listAllBowlers.setLocation(100, 50);
+        setComponentProperties(listAllBowlers, 10, 150, 20, 100, 50);
         listAllBowlers.addActionListener(this);
         c.add(listAllBowlers);
 
         queryFor = new JLabel("Query For: ");
-        queryFor.setFont(new Font("Arial", Font.PLAIN, 20));
-        queryFor.setSize(200, 20);
-        queryFor.setLocation(100, 150);
+        setComponentProperties(queryFor, 20, 200, 20, 100, 150);
         c.add(queryFor);
 
         Object[] tables = new String[0];
@@ -85,42 +75,38 @@ public class QueryView extends JFrame implements ActionListener, ItemListener {
         c.add(queryForInput);
 
         queryUsing = new JLabel("Query Using: ");
-        queryUsing.setFont(new Font("Arial", Font.PLAIN, 20));
-        queryUsing.setSize(200, 20);
-        queryUsing.setLocation(100, 200);
+        setComponentProperties(queryUsing, 20, 200, 20, 100, 200);
         c.add(queryUsing);
 
         queryUsingInput = createComboBox(250, 200, cols);
         c.add(queryUsingInput);
 
         queryValue = new JLabel("Query Value: ");
-        queryValue.setFont(new Font("Arial", Font.PLAIN, 20));
-        queryValue.setSize(200, 20);
-        queryValue.setLocation(100, 250);
+        setComponentProperties(queryValue, 20, 200, 20, 100, 250);
         c.add(queryValue);
 
         queryValueInput = new JTextField();
-        queryValueInput.setFont(new Font("Arial", Font.PLAIN, 15));
-        queryValueInput.setSize(190, 20);
-        queryValueInput.setLocation(250, 250);
+        setComponentProperties(queryValueInput, 15, 190, 20, 250, 250);
         c.add(queryValueInput);
 
 
         sub = new JButton("Submit");
-        sub.setFont(new Font("Arial", Font.PLAIN, 15));
-        sub.setSize(100, 20);
-        sub.setLocation(150, 500);
+        setComponentProperties(sub, 15, 100, 20, 150, 500);
         sub.addActionListener(this);
         c.add(sub);
 
         reset = new JButton("Reset");
-        reset.setFont(new Font("Arial", Font.PLAIN, 15));
-        reset.setSize(100, 20);
-        reset.setLocation(270, 500);
+        setComponentProperties(reset, 15, 100, 20, 270, 500);
         reset.addActionListener(this);
         c.add(reset);
 
         setVisible(true);
+    }
+
+    private void setComponentProperties(Component component, int fontSize, int width, int height, int x, int y) {
+        component.setFont(new Font("Arial", Font.PLAIN, fontSize));
+        component.setSize(width, height);
+        component.setLocation(x, y);
     }
 
     @Override
