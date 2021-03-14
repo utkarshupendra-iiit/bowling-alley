@@ -7,9 +7,7 @@ package entity;
  */
 
 
-import entity.Bowler;
-import entity.Score;
-import persistence.ScoreHistoryFile;
+import persistence.ScoreHistoryDb;
 import view.PrintableText;
 
 import java.io.*;
@@ -27,7 +25,7 @@ public class ScoreReport {
 		String full = bowler.getFullName();
 		Vector v = null;
 		try{
-			v = ScoreHistoryFile.getScores(nick);
+			v = ScoreHistoryDb.getScores(nick);
 		} catch (Exception e){System.err.println("Error: " + e);}
 		
 		Iterator scoreIt = v.iterator();
