@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import static ViewControl.ViewUtils.*;
+
 /**
  * Constructor for GUI used to Add Parties to the waiting party queue.
  */
@@ -99,15 +101,9 @@ public class QueryView extends JFrame implements ActionListener, ItemListener {
         setComponentProperties(reset, 15, 100, 20, 270, 500);
         reset.addActionListener(this);
         c.add(reset);
-
         setVisible(true);
     }
 
-    private void setComponentProperties(Component component, int fontSize, int width, int height, int x, int y) {
-        component.setFont(new Font("Arial", Font.PLAIN, fontSize));
-        component.setSize(width, height);
-        component.setLocation(x, y);
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -158,20 +154,6 @@ public class QueryView extends JFrame implements ActionListener, ItemListener {
         }
     }
 
-    private Object[][] parseMapToData(List<Map<String, String>> result, int numCols) {
-        Object[][] res = new Object[result.size()][numCols];
-        int i = 0;
-        for (Map<String, String> map : result) {
-            int j = 0;
-            for (String key : map.keySet()) {
-                res[i][j] = map.get(key);
-                j++;
-            }
-            i++;
-        }
-        return res;
-    }
-
     @Override
     public void itemStateChanged(ItemEvent e) {
         if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -185,21 +167,6 @@ public class QueryView extends JFrame implements ActionListener, ItemListener {
                     throwables.printStackTrace();
                 }
             }
-        }
-    }
-
-    private JComboBox createComboBox(int x, int y, Object[] content) {
-        JComboBox box = new JComboBox(content);
-        box.setFont(new Font("Arial", Font.PLAIN, 15));
-        box.setSize(190, 20);
-        box.setLocation(x, y);
-        return box;
-    }
-
-    private void setItemsToComboBox(Object[] items, JComboBox box) {
-        box.removeAllItems();
-        for (Object item : items) {
-            box.addItem(item);
         }
     }
 }

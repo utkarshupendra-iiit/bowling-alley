@@ -8,18 +8,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+
+import static ViewControl.ViewUtils.createComboBox;
+import static ViewControl.ViewUtils.setComponentProperties;
 
 /**
  * Constructor for GUI used to Add Parties to the waiting party queue.
  */
 
-public class EntryPointView extends JFrame implements ActionListener, ItemListener {
+public class EntryPointView extends JFrame implements ActionListener {
 
     private Container c;
 
@@ -80,12 +80,6 @@ public class EntryPointView extends JFrame implements ActionListener, ItemListen
         setVisible(true);
     }
 
-    private void setComponentProperties(Component component, int fontSize, int width, int height, int x, int y) {
-        component.setFont(new Font("Arial", Font.PLAIN, fontSize));
-        component.setSize(width, height);
-        component.setLocation(x, y);
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(login)) {
@@ -135,40 +129,6 @@ public class EntryPointView extends JFrame implements ActionListener, ItemListen
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-        }
-    }
-
-    private Object[][] parseMapToData(List<Map<String, String>> result, int numCols) {
-        Object[][] res = new Object[result.size()][numCols];
-        int i = 0;
-        for (Map<String, String> map : result) {
-            int j = 0;
-            for (String key : map.keySet()) {
-                res[i][j] = map.get(key);
-                j++;
-            }
-            i++;
-        }
-        return res;
-    }
-
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-
-    }
-
-    private JComboBox createComboBox(int x, int y, Object[] content) {
-        JComboBox box = new JComboBox(content);
-        box.setFont(new Font("Arial", Font.PLAIN, 15));
-        box.setSize(190, 20);
-        box.setLocation(x, y);
-        return box;
-    }
-
-    private void setItemsToComboBox(Object[] items, JComboBox box) {
-        box.removeAllItems();
-        for (Object item : items) {
-            box.addItem(item);
         }
     }
 }
