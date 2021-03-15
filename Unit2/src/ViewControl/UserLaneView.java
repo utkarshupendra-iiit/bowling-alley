@@ -8,7 +8,7 @@ public class UserLaneView extends JFrame {
     private Container c;
 
     public UserLaneView(String username) {
-        setTitle("Login Window");
+        setTitle("User View Window");
         setBounds(300, 90, 500, 200);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setResizable(false);
