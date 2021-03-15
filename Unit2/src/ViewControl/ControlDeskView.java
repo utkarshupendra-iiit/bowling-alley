@@ -127,7 +127,7 @@ public class ControlDeskView implements ActionListener, Observer {
 		}
 		if (e.getSource().equals(finished)) {
 			win.setVisible(false);
-			System.exit(0);
+			EntryPointView view = new EntryPointView();
 		}
 		if (e.getSource().equals(query)) {
 			QueryView queryView = new QueryView();
