@@ -11,6 +11,9 @@ public class ScoreCalculator {
 
     protected void calculateGame(int[] bowlersScores, int bowlerIndex, int frameNumber, int roll, int pinsDown) {
         int currentRoll = (2 * frameNumber) + roll;
+        if(frameNumber == 10){
+            currentRoll = (2 * frameNumber) + roll + 1;
+        }
 
         // Reset the previous record of scores
         for (int i = 0; i < cumulScores[bowlerIndex].length; i++) {
@@ -38,6 +41,8 @@ public class ScoreCalculator {
                     prevScore += normal(i, bowlersScores);
                 }
             }
+//            System.out.println("Turn " + i + ", " + bowlerIndex + ": " + bowlersScores[i]);
+//            System.out.println(frameNumber);
             if (i > 1) {
                 penalty = calculatePenalty(i, bowlersScores);
                 prevScore = prevScore - penalty;
@@ -48,7 +53,7 @@ public class ScoreCalculator {
                 prevScore = prevScore - penalty;
             }
             frameIndex = i / 2;
-            if (i > 19) { // Last frame could have three throws
+            if (i == 20) { // Last frame could have three throws
                 frameIndex = 9;
             }
             this.cumulScores[bowlerIndex][frameIndex] = prevScore;
@@ -56,7 +61,7 @@ public class ScoreCalculator {
     }
 
     private int strike(int index, int[] currentScores) {
-        if (index > 17) {
+        if ((index > 17 && index<=21) || index>25) {
             return (10);
         }
         int count = 0;
@@ -71,7 +76,7 @@ public class ScoreCalculator {
     }
 
     private int spare(int index, int[] currentScores) {
-        if (index > 17) {
+        if ((index > 17 && index<=21) || index>25) {
             return (10);
         }
         int count = 0;
@@ -86,7 +91,7 @@ public class ScoreCalculator {
     }
 
     private int normal(int index, int[] currentScores) {
-        if (index % 2 == 1 && currentScores[index - 1] >= 0) {
+        if (index % 2 == 1 && currentScores[index - 1] >= 0 && index!=21) {
             return (currentScores[index] + currentScores[index - 1]);
         }
         return (currentScores[index]);

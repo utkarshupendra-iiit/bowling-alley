@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.LinkedHashMap;
 
 public class ReferenceLRUCache {
-    private static LinkedHashMap<String, String> cache;
+    private static LinkedHashMap<String, String> cache = new LinkedHashMap<>();
     private static int capacity = 20;
 
     public static String getEntry(String key) {
@@ -23,7 +23,9 @@ public class ReferenceLRUCache {
             cache.remove(firstKey);
         }
         try {
-            return cache.put(key, String.valueOf(ReferenceDb.getEntry(key)));
+            String value = (String) ReferenceDb.getEntry(key);
+            cache.put(key, String.valueOf(value));
+            return value;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             return null;

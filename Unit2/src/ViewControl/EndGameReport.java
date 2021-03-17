@@ -1,13 +1,17 @@
 package ViewControl;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
 import Model.Bowler;
 import Model.Party;
-import java.util.*;
+
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.Vector;
 
 public class EndGameReport implements ActionListener, ListSelectionListener {
 
@@ -82,9 +86,9 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 		// Center Window on Screen
 		Dimension screenSize = (Toolkit.getDefaultToolkit()).getScreenSize();
 		win.setLocation(
-			((screenSize.width) / 2) - ((win.getSize().width) / 2),
-			((screenSize.height) / 2) - ((win.getSize().height) / 2));
-		win.show();
+				((screenSize.width) / 2) - ((win.getSize().width) / 2),
+				((screenSize.height) / 2) - ((win.getSize().height) / 2));
+		win.setVisible(true);
 
 	}
 
@@ -93,8 +97,8 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 			//Add selected to the vector.
 			retVal.add(selectedMember);
 		}
-		if (e.getSource().equals(finished)) {		
-			win.hide();
+		if (e.getSource().equals(finished)) {
+			win.setVisible(false);
 			result = 1;
 		}
 	}
@@ -116,7 +120,7 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 	}
 	
 	public void destroy() {
-		win.hide();
+		win.setVisible(false);
 	}
 
 	public static void main( String args[] ) {
