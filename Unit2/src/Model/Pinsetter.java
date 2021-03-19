@@ -5,8 +5,9 @@ package Model;
  *
  */
 
-import java.util.*;
-import java.lang.Boolean;
+import java.util.Observable;
+import java.util.Random;
+import java.util.Vector;
 
 public class Pinsetter extends Observable {
 
@@ -60,30 +61,32 @@ public class Pinsetter extends Observable {
 	 * @pre none
 	 * @post pins may have been knocked down and the thrownumber has been incremented
 	 */
-	public void ballThrown() {	// simulated event of ball hits sensor
+	public void ballThrown(int score, boolean isExtraThrow) {	// simulated event of ball hits sensor
 		int count = 0;
+		Vector standing_inds = new Vector();
 		foul = false;
 		double skill = rnd.nextDouble();
 		for (int i=0; i <= 9; i++) {
 			if (pins[i]) {
-				double pinluck = rnd.nextDouble();
-				if (pinluck <= .04){ 
-					foul = true;
-				}
-				if ( ((skill + pinluck)/2.0 * 1.2) > .5 ){
-					pins[i] = false;
-				} 
-				if (!pins[i]) {		// this pin just knocked down
-					count++;
-				}
+				standing_inds.add(i);
 			}
+		}
+		for (int i=0; i < score && standing_inds.size() > 0; i++) {
+			int knocked_pin_index = rnd.nextInt(standing_inds.size());
+			int knocked_pin = (int) standing_inds.get(knocked_pin_index);
+			pins[knocked_pin] = false;
+			count++;
+			standing_inds.remove(knocked_pin_index);
 		}
 
 		try {
 			Thread.sleep(500);				// pinsetter is where delay will be in a real game
 		} catch (Exception e) {}
-		sendEvent(count);
-		throwNumber++;
+
+		if(!isExtraThrow){
+			sendEvent(count);
+			throwNumber++;
+		}
 	}
 
 	/** reset()

@@ -7,9 +7,10 @@ package ViewControl;
  * Window>Preferences>Java>Code Generation.
  */
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class EndGamePrompt implements ActionListener {
 
@@ -77,7 +78,8 @@ public class EndGamePrompt implements ActionListener {
 		if (e.getSource().equals(yesButton)) {		
 			result=1;
 		}
-		if (e.getSource().equals(noButton)) {		
+		if (e.getSource().equals(noButton)) {
+
 			result=2;
 		}
 	}

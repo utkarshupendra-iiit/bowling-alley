@@ -1,11 +1,13 @@
 package ViewControl;
 
-import java.awt.*;
-import javax.swing.*;
-
 import Model.Pinsetter;
 import Model.PinsetterEvent;
-import java.util.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Vector;
 
 /**
  *  constructs a prototype PinSetter GUI
@@ -16,6 +18,7 @@ public class PinsetterView implements Observer {
     private Vector pinVect = new Vector ( );
     private JPanel firstRoll;
     private JPanel secondRoll;
+	public Container cpanel;
 
 
 	private JFrame frame;
@@ -35,7 +38,7 @@ public class PinsetterView implements Observer {
 		ps.addObserver(this);
 		frame = new JFrame ( "Lane " + laneNum + ":" );
 		
-		Container cpanel = frame.getContentPane ( );
+		cpanel = frame.getContentPane ( );
 		
 		JPanel pins = new JPanel ( );
 		

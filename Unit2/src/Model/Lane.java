@@ -4,6 +4,8 @@ import persistence.ScoreHistoryDb;
 
 import java.util.*;
 
+import static java.lang.Thread.sleep;
+
 public class Lane extends Observable implements Observer, Runnable {
 
 	private Party party;
@@ -24,6 +26,8 @@ public class Lane extends Observable implements Observer, Runnable {
 	private int maxIndex;
 	private Bowler currentThrower;			// = the thrower who just took a throw
 	private ScoreCalculator sc;
+	private boolean extraThrow;
+	private boolean publishedLane = false;
 
 	/** Lane()
 	 *
@@ -56,6 +60,12 @@ public class Lane extends Observable implements Observer, Runnable {
 				}
 				if (bowlerIterator.hasNext()) {
 					currentThrower = (Bowler)bowlerIterator.next();
+
+					if (!publishedLane)
+					{
+						publishedLane = true;
+						publish();
+					}
 					canThrowAgain = true;
 					if(frameNumber==0){
 //						System.out.println(currentThrower.getNick());
@@ -68,8 +78,9 @@ public class Lane extends Observable implements Observer, Runnable {
 					tenthFrameStrike = false;
 					ball = 0;
 					while (canThrowAgain) {
-						setter.ballThrown();		// simulate the thrower's ball hiting
-						ball++;
+						try {
+							sleep(10);
+						} catch (Exception e) {}
 					}
 					if (frameNumber == 9){
 						try{
@@ -163,10 +174,16 @@ public class Lane extends Observable implements Observer, Runnable {
 			} catch (Exception e) {}
 		}
 	}
+	public void throwBall(int score) {
+		setter.ballThrown(score, extraThrow);		// simulate the thrower's ball hiting
+		ball++;
+
+	}
 
 	public void clearLane(){
 		party = null;
 		partyAssigned = false;
+		publishedLane= false;
 	}
 
 	/** resetBowlerIterator()
