@@ -1,13 +1,18 @@
 package ViewControl;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
 import Model.Bowler;
 import Model.Lane;
 import Model.Pinsetter;
 import Model.PinsetterEvent;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Vector;
 
 public class LaneStatusView implements ActionListener, Observer {
 
@@ -15,26 +20,22 @@ public class LaneStatusView implements ActionListener, Observer {
 	private JLabel curBowler, pinsDown;
 	private JButton viewLane;
 	private JButton viewPinSetter, maintenance;
+	private OverallLaneView olv;
 	private PinsetterView psv;
 	private LaneView lv;
 	private Lane lane;
 	int laneNum;
 
-	boolean laneShowing;
-	boolean psShowing;
+
 
 	public LaneStatusView(Lane lane, int laneNum ) {
 
 		this.lane = lane;
 		this.laneNum = laneNum;
-
-		laneShowing=false;
-		psShowing=false;
 		Pinsetter ps = lane.getPinsetter();
-		psv = new PinsetterView( ps, laneNum );
 		ps.addObserver(this);
-		lv = new LaneView( lane, laneNum );
-		lane.addObserver(lv);
+		olv = new OverallLaneView(lane, laneNum);
+
 		jp = new JPanel();
 		jp.setLayout(new FlowLayout());
 		JLabel cLabel = new JLabel( "Now Bowling: " );
@@ -55,13 +56,9 @@ public class LaneStatusView implements ActionListener, Observer {
 		viewLane.addActionListener(this);
 		viewLanePanel.add(viewLane);
 
-		viewPinSetter = new JButton("Pinsetter");
-		JPanel viewPinSetterPanel = new JPanel();
-		viewPinSetterPanel.setLayout(new FlowLayout());
-		viewPinSetter.addActionListener(this);
-		viewPinSetterPanel.add(viewPinSetter);
 
-		maintenance = new JButton("Maintenance Call");
+
+		maintenance = new JButton("Pause/Resume");
 		maintenance.setBackground(Color.GREEN);
 		maintenance.setOpaque(true);
 		JPanel maintenancePanel = new JPanel();
@@ -70,10 +67,10 @@ public class LaneStatusView implements ActionListener, Observer {
 		maintenancePanel.add(maintenance);
 
 		viewLane.setEnabled( false );
-		viewPinSetter.setEnabled( false );
+
 
 		buttonPanel.add(viewLanePanel);
-		buttonPanel.add(viewPinSetterPanel);
+
 		buttonPanel.add(maintenancePanel);
 
 		jp.add( cLabel );
@@ -88,28 +85,12 @@ public class LaneStatusView implements ActionListener, Observer {
 	}
 
 	public void actionPerformed( ActionEvent e ) {
-		if ( lane.isPartyAssigned() ) { 
-			if (e.getSource().equals(viewPinSetter)) {
-				if ( psShowing == false ) {
-					psv.show();
-					psShowing=true;
-				} else if ( psShowing == true ) {
-					psv.hide();
-					psShowing=false;
-				}
+		if (lane.isPartyAssigned()) {
+			if (e.getSource().equals(viewLane)) {
+				lane.unPauseGame();
+				olv.toggle();
+
 			}
-		}
-		if (e.getSource().equals(viewLane)) {
-			if ( lane.isPartyAssigned() ) { 
-				if ( laneShowing == false ) {
-					lv.show();
-					laneShowing=true;
-				} else if ( laneShowing == true ) {
-					lv.hide();
-					laneShowing=false;
-				}
-			}
-		}
 		if (e.getSource().equals(maintenance)) {
 			if ( lane.isGameIsHalted() ) {
 				lane.unPauseGame();
@@ -120,7 +101,7 @@ public class LaneStatusView implements ActionListener, Observer {
 				maintenance.setBackground( Color.RED );
 			}
 		}
-	}
+	}}
 
 	@Override
 	public void update(Observable o, Object arg) {
@@ -144,6 +125,7 @@ public class LaneStatusView implements ActionListener, Observer {
 					Vector printVector;	
 					EndGameReport egr = new EndGameReport( ((Bowler)le.getParty().getMembers().get(0)).getNickName() + "'s Party", le.getParty());
 					printVector = egr.getResult();
+					olv.getframe().dispose(); // destrory the combine newly added frame
 					Iterator scoreIt = le.getParty().getMembers().iterator();
 					lane.clearLane();
 					int myIndex = 0;
@@ -167,10 +149,10 @@ public class LaneStatusView implements ActionListener, Observer {
 			}	
 			if ( lane.isPartyAssigned() == false ) {
 				viewLane.setEnabled( false );
-				viewPinSetter.setEnabled( false );
+				//viewPinSetter.setEnabled( false );
 			} else {
 				viewLane.setEnabled( true );
-				viewPinSetter.setEnabled( true );
+				//viewPinSetter.setEnabled( true );
 			}
 		}
 	}	

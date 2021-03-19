@@ -27,7 +27,7 @@ public class LaneView implements ActionListener, Observer {
 
     private boolean initDone = false;
     JFrame frame;
-    Container cpanel;
+    public Container cpanel;
     Vector bowlers;
     JPanel[][] balls;
     JLabel[][] ballLabel;
@@ -36,7 +36,8 @@ public class LaneView implements ActionListener, Observer {
     JLabel[][] scoreLabel;
     JPanel[][] ballGrid;
     JPanel[] pins;
-    JButton maintenance;
+    JButton maintenance,throwBall,finish;
+    MovingBallPanel bouncingBallSample;
     Lane lane;
 
     public LaneView(Lane lane, int laneNum) {
@@ -51,6 +52,7 @@ public class LaneView implements ActionListener, Observer {
             }
         });
         cpanel.add(new JPanel());
+        return;
     }
 
     public void show() {
@@ -147,14 +149,28 @@ public class LaneView implements ActionListener, Observer {
             }
             panel.add(pins[i]);
         }
-
+        panel.add(getBallPanel());
         initDone = true;
         return panel;
+    }
+    private JPanel getBallPanel() {
+        bouncingBallSample = new MovingBallPanel();
+        return bouncingBallSample;
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(maintenance)) {
             lane.pauseGame();
+        }
+        if (e.getSource().equals(throwBall)) {
+            int point = bouncingBallSample.stopBall();
+            throwBall.setEnabled(false);
+            lane.throwBall(point);
+        }
+        if (e.getSource().equals(finish)) {
+
+            frame.dispose();
+            //lane.publish();
         }
     }
 
@@ -184,13 +200,30 @@ public class LaneView implements ActionListener, Observer {
 
                 Insets buttonMargin = new Insets(4, 4, 4, 4);
 
-                maintenance = new JButton("Maintenance Call");
+                maintenance = new JButton("Pause/Resume");
                 JPanel maintenancePanel = new JPanel();
                 maintenancePanel.setLayout(new FlowLayout());
                 maintenance.addActionListener(this);
                 maintenancePanel.add(maintenance);
 
                 buttonPanel.add(maintenancePanel);
+// Added Throw and finish
+
+                throwBall = new JButton("Throw");
+                JPanel tPanel = new JPanel();
+                tPanel.setLayout(new FlowLayout());
+                throwBall.addActionListener(this);
+                tPanel.add(throwBall);
+                buttonPanel.add(tPanel);
+
+                finish = new JButton("Finish");
+                JPanel fpanel = new JPanel();
+                fpanel.setLayout(new FlowLayout());
+                finish.addActionListener(this);
+                fpanel.add(finish);
+
+                buttonPanel.add(fpanel);
+
 
                 cpanel.add(buttonPanel, "South");
 
@@ -224,9 +257,11 @@ public class LaneView implements ActionListener, Observer {
                     }
                 }
             }
+            throwBall.setEnabled(true);
         } else {
             initDone = false;
         }
+
     }
 
     private Image getScaledImage(JLabel label, String emo) {
@@ -236,6 +271,6 @@ public class LaneView implements ActionListener, Observer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return img.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
+        return img.getScaledInstance(30, 60, Image.SCALE_SMOOTH); // please check once giving error
     }
 }
