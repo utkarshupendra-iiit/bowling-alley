@@ -7,6 +7,7 @@ import java.util.*;
 public class Lane extends Observable implements Observer, Runnable {
 
 	private Party party;
+	private String winnerName;
 	private Pinsetter setter;
 	private HashMap scores;
 	private boolean gameIsHalted;
@@ -71,20 +72,20 @@ public class Lane extends Observable implements Observer, Runnable {
 						setter.ballThrown();		// simulate the thrower's ball hiting
 						ball++;
 					}
-					if (frameNumber == 9){
+					if (frameNumber == 9 && bowlIndex==0 && !bowlerIterator.hasNext()){
 						try{
 							Date date = new Date();
 							String dateString = "" + date.getHours() + ":" + date.getMinutes() + " " + date.getMonth() + "/" + date.getDay() + "/" + (date.getYear() + 1900);
 							ScoreHistoryDb.addScore(currentThrower.getNick(), dateString, new Integer(cumulScores[bowlIndex][9]).toString());
 						} catch (Exception e) {System.err.println("Exception in addScore. "+ e );}
 					}
-//					if(frameNumber == 13){
-//						try{
-//							Date date = new Date();
-//							String dateString = "" + date.getHours() + ":" + date.getMinutes() + " " + date.getMonth() + "/" + date.getDay() + "/" + (date.getYear() + 1900);
-//							ScoreHistoryDb.addScore(currentThrower.getNick(), dateString, new Integer(cumulScores[bowlIndex][9]).toString());
-//						} catch (Exception e) {System.err.println("Exception in addScore. "+ e );}
-//					}
+					else if(frameNumber == 13){
+						try{
+							Date date = new Date();
+							String dateString = "" + date.getHours() + ":" + date.getMinutes() + " " + date.getMonth() + "/" + date.getDay() + "/" + (date.getYear() + 1900);
+							ScoreHistoryDb.addScore(currentThrower.getNick(), dateString, new Integer(cumulScores[bowlIndex][9]).toString());
+						} catch (Exception e) {System.err.println("Exception in addScore. "+ e );}
+					}
 					setter.reset();
 					bowlIndex++;
 				} else {
@@ -99,6 +100,12 @@ public class Lane extends Observable implements Observer, Runnable {
 //						System.out.println(newHigh);
 //						System.out.println(secondIndex);
 						if (newHigh < maxPrev){
+							currentThrower = (Bowler)bowlerIterator.next();
+							while( bowlIndex!=maxIndex ){
+								currentThrower = (Bowler)bowlerIterator.next();
+								bowlIndex++;
+							}
+							winnerName = currentThrower.getNick();
 							publish();
 							gameFinished = true;
 							gameNumber++;
@@ -106,6 +113,58 @@ public class Lane extends Observable implements Observer, Runnable {
 					}
 					if (frameNumber == 14)
 					{
+						int highest = new Integer(cumulScores[maxIndex][13]);
+						currentThrower = (Bowler)bowlerIterator.next();
+						if(new Integer(cumulScores[secondIndex][13])>highest){
+							while( bowlIndex!=secondIndex ){
+								currentThrower = (Bowler)bowlerIterator.next();
+								bowlIndex++;
+							}
+							winnerName = currentThrower.getNick();
+						}
+						else if(new Integer(cumulScores[secondIndex][13])<highest){
+							while( bowlIndex!=maxIndex ){
+								currentThrower = (Bowler)bowlerIterator.next();
+								bowlIndex++;
+							}
+							winnerName = currentThrower.getNick();
+						}
+						else{
+							int[] checkScore;
+							int strikecount1 = 0;
+							int strikecount2 = 0;
+							while( bowlIndex!=maxIndex ){
+								currentThrower = (Bowler)bowlerIterator.next();
+								bowlIndex++;
+							}
+							checkScore = (int[]) scores.get(currentThrower);
+							winnerName = currentThrower.getNick();
+							for(int x=0; x<28; x++)
+							{
+								if(x==19 && checkScore[x]==10)
+									strikecount1++;
+								else if(x%2==0 && checkScore[x]==10)
+									strikecount1++;
+							}
+
+							resetBowlerIterator();
+							bowlIndex = 0;
+							currentThrower = (Bowler)bowlerIterator.next();
+							while( bowlIndex!=secondIndex ){
+								currentThrower = (Bowler)bowlerIterator.next();
+								bowlIndex++;
+							}
+							checkScore = (int[]) scores.get(currentThrower);
+							for(int x=0; x<28; x++)
+							{
+								if(x==19 && checkScore[x]==10)
+									strikecount2++;
+								else if(x%2==0 && checkScore[x]==10)
+									strikecount2++;
+							}
+							if(strikecount2>strikecount1)
+								winnerName = currentThrower.getNick();
+						}
 						publish();
 						gameFinished = true;
 						gameNumber++;
@@ -119,6 +178,7 @@ public class Lane extends Observable implements Observer, Runnable {
 						currentThrower = (Bowler)bowlerIterator.next();
 						if (!bowlerIterator.hasNext())
 						{
+							winnerName = currentThrower.getNick();
 							publish();
 							gameFinished = true;
 							gameNumber++;
@@ -139,9 +199,8 @@ public class Lane extends Observable implements Observer, Runnable {
 									secondIndex = maxIndex;
 									maxIndex = bowlIndex;
 								}
-								else if(current>second && current!=maxScore)
+								else if(current>second || current==maxScore)
 								{
-//									System.out.println("In c2");
 									second = current;
 									secondIndex = bowlIndex;
 								}
@@ -150,8 +209,6 @@ public class Lane extends Observable implements Observer, Runnable {
 						}
 						bowlIndex = 0;
 						resetBowlerIterator();
-//						System.out.println("Second Highest is");
-//						System.out.println(secondIndex);
 					}
 				}
 			}
@@ -299,6 +356,10 @@ public class Lane extends Observable implements Observer, Runnable {
 	 */
 	public Party getParty() {
 		return party;
+	}
+
+	public String getWinner() {
+		return winnerName;
 	}
 
 	/**

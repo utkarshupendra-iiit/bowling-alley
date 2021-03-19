@@ -132,7 +132,7 @@ public class LaneStatusView implements ActionListener, Observer {
 		else if(o instanceof Lane){
 			Lane le = (Lane)o;
 			if(lane.isGameFinished() && lane.isPartyAssigned()){ // Start end of game routine
-				EndGamePrompt egp = new EndGamePrompt( ((Bowler) le.getParty().getMembers().get(0)).getNickName() + "'s Party" );
+				EndGamePrompt egp = new EndGamePrompt( ((Bowler) le.getParty().getMembers().get(0)).getNickName() + "'s Party", le.getWinner());
 				int result = egp.getResult();
 				egp.distroy();
 				egp = null;	
