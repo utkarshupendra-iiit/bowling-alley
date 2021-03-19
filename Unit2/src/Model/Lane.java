@@ -9,9 +9,7 @@ public class Lane extends Observable implements Observer, Runnable {
 	private Party party;
 	private Pinsetter setter;
 	private HashMap scores;
-	private boolean gameIsHalted;
 	private boolean partyAssigned;
-	private boolean gameFinished;
 	private Iterator bowlerIterator;
 	private int ball;
 	private int bowlIndex;
@@ -22,11 +20,13 @@ public class Lane extends Observable implements Observer, Runnable {
 	private int gameNumber;
 	private int secondIndex;
 	private int maxIndex;
-	private Bowler currentThrower;			// = the thrower who just took a throw
+	private Bowler currentThrower;            // = the thrower who just took a throw
 	private ScoreCalculator sc;
+	private GameStateManager gameStateManager;
 
-	/** Lane()
-	 *
+	/**
+	 * Lane()
+	 * <p>
 	 * Constructs a new lane and starts its thread
 	 *
 	 * @pre none
@@ -36,7 +36,8 @@ public class Lane extends Observable implements Observer, Runnable {
 		this.setter = new Pinsetter();
 		this.setter.addObserver(this);
 		this.scores = new HashMap();
-		this.gameIsHalted = false;
+		this.gameStateManager = new GameStateManager();
+		this.gameStateManager.setState(State.RUNNING);
 		this.partyAssigned = false;
 		this.gameNumber = 0;
 		(new Thread(this, "Lane Thread")).start();
@@ -48,16 +49,17 @@ public class Lane extends Observable implements Observer, Runnable {
 	 */
 	public void run() {
 		while (true) {
-			if (partyAssigned && !gameFinished) {	// we have a party on this lane, so next bower can take a throw
-				while (gameIsHalted) {
+			if (partyAssigned && !gameStateManager.getState().getState().equals(State.FINISHED)) {    // we have a party on this lane, so next bower can take a throw
+				while (gameStateManager.getState().getState().equals(State.HALTED)) {
 					try {
 						Thread.sleep(10);
-					} catch (Exception e) {}
+					} catch (Exception e) {
+					}
 				}
 				if (bowlerIterator.hasNext()) {
-					currentThrower = (Bowler)bowlerIterator.next();
+					currentThrower = (Bowler) bowlerIterator.next();
 					canThrowAgain = true;
-					if(frameNumber==0){
+					if (frameNumber == 0) {
 //						System.out.println(currentThrower.getNick());
 					}
 					if( (frameNumber==10 && bowlIndex!=secondIndex) || ( frameNumber>10 && !(bowlIndex==secondIndex || bowlIndex== maxIndex) ) ) {
@@ -98,16 +100,15 @@ public class Lane extends Observable implements Observer, Runnable {
 //						System.out.println("New high");
 //						System.out.println(newHigh);
 //						System.out.println(secondIndex);
-						if (newHigh < maxPrev){
+						if (newHigh < maxPrev) {
 							publish();
-							gameFinished = true;
+							gameStateManager.setState(State.FINISHED);
 							gameNumber++;
 						}
 					}
-					if (frameNumber == 14)
-					{
+					if (frameNumber == 14) {
 						publish();
-						gameFinished = true;
+						gameStateManager.setState(State.FINISHED);
 						gameNumber++;
 					}
 					if (frameNumber == 10)
@@ -117,10 +118,9 @@ public class Lane extends Observable implements Observer, Runnable {
 						secondIndex =0;
 						int second = 0;
 						currentThrower = (Bowler)bowlerIterator.next();
-						if (!bowlerIterator.hasNext())
-						{
+						if (!bowlerIterator.hasNext()) {
 							publish();
-							gameFinished = true;
+							gameStateManager.setState(State.FINISHED);
 							gameNumber++;
 						}
 						else
@@ -154,8 +154,7 @@ public class Lane extends Observable implements Observer, Runnable {
 //						System.out.println(secondIndex);
 					}
 				}
-			}
-			else if (partyAssigned && gameFinished) {
+			} else if (partyAssigned && gameStateManager.getState().getState().equals(State.FINISHED)) {
 				publish();
 			}
 			try {
@@ -189,14 +188,14 @@ public class Lane extends Observable implements Observer, Runnable {
 	 */
 	public void resetScores() {
 		Iterator bowlIt = (party.getMembers()).iterator();
-		while ( bowlIt.hasNext() ) {
+		while (bowlIt.hasNext()) {
 			int[] toPut = new int[32];
-			for ( int i = 0; i != 32; i++){
+			for (int i = 0; i != 32; i++) {
 				toPut[i] = -1;
 			}
-			scores.put( bowlIt.next(), toPut );
+			scores.put(bowlIt.next(), toPut);
 		}
-		gameFinished = false;
+		gameStateManager.setState(State.RUNNING);
 		frameNumber = 0;
 	}
 
@@ -270,7 +269,7 @@ public class Lane extends Observable implements Observer, Runnable {
 	 * @return true if the game is done, false otherwise
 	 */
 	public boolean isGameFinished() {
-		return gameFinished;
+		return gameStateManager.getState().getState().equals(State.FINISHED);
 	}
 
 	public void publish(){
@@ -282,7 +281,7 @@ public class Lane extends Observable implements Observer, Runnable {
 	 * Pause the execution of this game
 	 */
 	public void pauseGame() {
-		gameIsHalted = true;
+		gameStateManager.setState(State.HALTED);
 		publish();
 	}
 
@@ -290,7 +289,7 @@ public class Lane extends Observable implements Observer, Runnable {
 	 * Resume the execution of this game
 	 */
 	public void unPauseGame() {
-		gameIsHalted = false;
+		gameStateManager.setState(State.RUNNING);
 		publish();
 	}
 
@@ -312,7 +311,7 @@ public class Lane extends Observable implements Observer, Runnable {
 	 * @return the gameIsHalted
 	 */
 	public boolean isGameIsHalted() {
-		return gameIsHalted;
+		return gameStateManager.getState().getState().equals(State.HALTED);
 	}
 
 	/**
