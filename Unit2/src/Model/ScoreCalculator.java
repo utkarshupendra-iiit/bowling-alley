@@ -32,7 +32,7 @@ public class ScoreCalculator {
                 prevScore += strike(i, bowlersScores);
             }
             // Check Spare
-            else if (!even && (bowlersScores[i - 1] + bowlersScores[i] == 10)) { // If the roll we are on an odd roll, and the past two rolls add to ten
+            else if (!even && (bowlersScores[i - 1] + bowlersScores[i] == 10) && i!=21) { // If the roll we are on an odd roll, and the past two rolls add to ten
                 prevScore += spare(i, bowlersScores);
             }
             // Check if Normal
@@ -57,6 +57,9 @@ public class ScoreCalculator {
                 frameIndex = 9;
             }
             this.cumulScores[bowlerIndex][frameIndex] = prevScore;
+            if(i>=22 && bowlersScores[21]>=0){
+                this.cumulScores[bowlerIndex][frameIndex] = prevScore - bowlersScores[21];
+            }
         }
     }
 

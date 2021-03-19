@@ -19,7 +19,7 @@ public class EndGamePrompt implements ActionListener {
 	private int result;
 	
 	
-	public EndGamePrompt( String partyName ) {
+	public EndGamePrompt( String partyName, String winnerName ) {
 		result = 0;
 		
 		win = new JFrame("Another Game for " + partyName + "?" );
@@ -34,7 +34,7 @@ public class EndGamePrompt implements ActionListener {
 		labelPanel.setLayout(new FlowLayout());
 		
 		JLabel message = new JLabel( "Party " + partyName 
-			+ " has finished bowling.\nWould they like to bowl another game?" );
+			+ " has finished bowling. Winner is " + winnerName + ". \nWould they like to bowl another game?" );
 
 		labelPanel.add( message );
 
