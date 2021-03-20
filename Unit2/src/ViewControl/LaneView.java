@@ -271,6 +271,6 @@ public class LaneView implements ActionListener, Observer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return img.getScaledInstance(30, 60, Image.SCALE_SMOOTH); // please check once giving error
+        return img.getScaledInstance(20, 20, Image.SCALE_SMOOTH); // please check once giving error
     }
 }

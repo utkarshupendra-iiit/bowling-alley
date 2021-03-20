@@ -3,7 +3,7 @@ package Model;
 public class GameStateManager {
     private GameState state;
 
-    public void setState(State st) {
+    public void setStateObject(State st) {
         if (st.equals(State.HALTED)) {
             state = new GameStateHalted();
         } else if (st.equals(State.RUNNING)) {
