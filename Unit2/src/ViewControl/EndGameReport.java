@@ -3,6 +3,7 @@ package ViewControl;
 import Model.Bowler;
 import Model.Party;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -10,6 +11,9 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -67,6 +71,8 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 		printButton = new JButton("Print Report");
 		JPanel printButtonPanel = new JPanel();
 		printButton.setForeground(Color.red);
+		printButton.setIcon(new ImageIcon(getScaledImage(printButtonPanel,
+				"print")));
 		printButtonPanel.setLayout(new FlowLayout());
 		printButton.addActionListener(this);
 		printButtonPanel.add(printButton);
@@ -74,6 +80,8 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 		finished = new JButton("Finished");
 		JPanel finishedPanel = new JPanel();
 		finished.setForeground(Color.blue);
+		finished.setIcon(new ImageIcon(getScaledImage(finishedPanel,
+				"finish")));
 		finishedPanel.setLayout(new FlowLayout());
 		finished.addActionListener(this);
 		finishedPanel.add(finished);
@@ -123,6 +131,15 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 			}
 		}
 		return retVal;	
+	}
+	private Image getScaledImage(JPanel label, String emo) {
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File(String.format("Unit2/resources/%s.png", emo)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return img.getScaledInstance(20, 20, Image.SCALE_SMOOTH); // please check once giving error
 	}
 	
 	public void destroy() {

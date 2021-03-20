@@ -42,6 +42,8 @@ public class EntryPointView extends JFrame implements ActionListener {
 
         c = getContentPane();
         c.setLayout(null);
+//        c.setOpaque(true);  // needed for JLabel to show the background color
+        c.setBackground(new Color(204, 238, 241));
 
         username = new JLabel("Username: ");
         setComponentProperties(username, 20, 200, 20, 100, 50);
@@ -68,11 +70,13 @@ public class EntryPointView extends JFrame implements ActionListener {
         c.add(loginAsInput);
 
         login = new JButton("Login");
+        login.setForeground(Color.blue);
         setComponentProperties(login, 15, 100, 20, 150, 200);
         login.addActionListener(this);
         c.add(login);
 
         register = new JButton("Register");
+        register.setForeground(Color.blue);
         setComponentProperties(register, 15, 100, 20, 270, 200);
         register.addActionListener(this);
         c.add(register);
