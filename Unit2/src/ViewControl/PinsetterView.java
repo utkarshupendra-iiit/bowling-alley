@@ -3,8 +3,12 @@ package ViewControl;
 import Model.Pinsetter;
 import Model.PinsetterEvent;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
@@ -20,7 +24,15 @@ public class PinsetterView implements Observer {
     private JPanel secondRoll;
 	public Container cpanel;
 
-
+	private Image getScaledImage(JPanel label, String emo) {
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File(String.format("Unit2/resources/%s.png", emo)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return img.getScaledInstance(20, 20, Image.SCALE_SMOOTH); // please check once giving error
+	}
 	private JFrame frame;
     
     /**
@@ -65,33 +77,53 @@ public class PinsetterView implements Observer {
 		
 		JPanel one = new JPanel ();
 		JLabel oneL = new JLabel ( "1" );
+		oneL.setIcon(new ImageIcon(getScaledImage(one,
+				"pin")));
 		one.add (oneL);
 		JPanel two = new JPanel ();
 		JLabel twoL = new JLabel ( "2" );
+		twoL.setIcon(new ImageIcon(getScaledImage(two,
+				"pin")));
 		two.add (twoL);
 		JPanel three = new JPanel ();
 		JLabel threeL = new JLabel ( "3" );
+		threeL.setIcon(new ImageIcon(getScaledImage(three,
+				"pin")));
 		three.add (threeL);
 		JPanel four = new JPanel ();
 		JLabel fourL = new JLabel ( "4" );
+		fourL.setIcon(new ImageIcon(getScaledImage(four,
+				"pin")));
 		four.add (fourL);
 		JPanel five = new JPanel ();
 		JLabel fiveL = new JLabel ( "5" );
+		fiveL.setIcon(new ImageIcon(getScaledImage(five,
+				"pin")));
 		five.add (fiveL);
 		JPanel six = new JPanel ();
 		JLabel sixL = new JLabel ( "6" );
+		sixL.setIcon(new ImageIcon(getScaledImage(six,
+				"pin")));
 		six.add (sixL);
 		JPanel seven = new JPanel ();
 		JLabel sevenL = new JLabel ( "7" );
+		sevenL.setIcon(new ImageIcon(getScaledImage(seven,
+				"pin")));
 		seven.add (sevenL);
 		JPanel eight = new JPanel ();
 		JLabel eightL = new JLabel ( "8" );
+		eightL.setIcon(new ImageIcon(getScaledImage(eight,
+				"pin")));
 		eight.add (eightL);
 		JPanel nine = new JPanel ();
 		JLabel nineL = new JLabel ( "9" );
+		nineL.setIcon(new ImageIcon(getScaledImage(nine,
+				"pin")));
 		nine.add (nineL);
 		JPanel ten = new JPanel ();
 		JLabel tenL = new JLabel ( "10" );
+		tenL.setIcon(new ImageIcon(getScaledImage(ten,
+				"pin")));
 		ten.add (tenL);
 		
 		//This Vector will keep references to the pin labels to show
