@@ -36,6 +36,8 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 
 		// Member Panel
 		JPanel partyPanel = new JPanel();
+		partyPanel.setOpaque(true);  // needed for JLabel to show the background color
+		partyPanel.setBackground(new Color(204, 238, 241));
 		partyPanel.setLayout(new FlowLayout());
 		partyPanel.setBorder(new TitledBorder("Party Members"));
 		
@@ -56,18 +58,22 @@ public class EndGameReport implements ActionListener, ListSelectionListener {
 		// Button Panel
 		// Button Panel
 		JPanel buttonPanel = new JPanel();
+		buttonPanel.setOpaque(true);  // needed for JLabel to show the background color
+		buttonPanel.setBackground(new Color(204, 238, 241));
 		buttonPanel.setLayout(new GridLayout(2, 1));
 
 		Insets buttonMargin = new Insets(4, 4, 4, 4);
 
 		printButton = new JButton("Print Report");
 		JPanel printButtonPanel = new JPanel();
+		printButton.setForeground(Color.red);
 		printButtonPanel.setLayout(new FlowLayout());
 		printButton.addActionListener(this);
 		printButtonPanel.add(printButton);
 
 		finished = new JButton("Finished");
 		JPanel finishedPanel = new JPanel();
+		finished.setForeground(Color.blue);
 		finishedPanel.setLayout(new FlowLayout());
 		finished.addActionListener(this);
 		finishedPanel.add(finished);
