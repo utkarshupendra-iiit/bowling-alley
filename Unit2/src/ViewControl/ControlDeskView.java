@@ -122,9 +122,7 @@ public class ControlDeskView implements ActionListener, Observer {
             controlDesk.assignLane();
         }
         if (e.getSource().equals(finished)) {
-            //win.setVisible(false);
-            System.exit(0);
-
+            win.setVisible(false);
             EntryPointView view = new EntryPointView();
         }
         if (e.getSource().equals(query)) {
